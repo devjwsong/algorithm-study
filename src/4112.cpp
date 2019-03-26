@@ -95,7 +95,7 @@ int main() {
     }
 
     for (int test=1; test<=numTest; ++test) {
-        printf("#%d %d", test, results[test-1]);
+        printf("#%d %d\n", test, results[test-1]);
     }
 
     return 0;
