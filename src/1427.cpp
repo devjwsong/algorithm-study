@@ -1,9 +1,18 @@
 #include <iostream>
-#include <algorithm>
 
 using namespace std;
 
 string input;
+
+void insert(int prev, int next) {
+    char temp = input[prev];
+
+    for (int i=prev; i<next; ++i) {
+        input[i] = input[i+1];
+    }
+
+    input[next] = temp;
+}
 
 void QuickSort(int start, int len, int pivot) {
     if (len <= 1) {
@@ -16,8 +25,12 @@ void QuickSort(int start, int len, int pivot) {
     while(1) {
 
         if (i == j) {
-            if ((input[i] >= input[pivot] && i > pivot) || (input[i] < input[pivot] && i < pivot)) {
-                swap(input[i], input[pivot]);
+            if (input[i] < input[pivot]) {
+                insert(pivot, i-1);
+                pivot = i-1;
+            } else {
+                insert(pivot, i);
+                pivot = i;
             }
             break;
         }
@@ -28,16 +41,15 @@ void QuickSort(int start, int len, int pivot) {
             if (input[j] < input[pivot] || j == pivot) {
                 --j;
             } else {
-                int temp = input[i];
+                char temp = input[i];
                 input[i] = input[j];
                 input[j] = temp;
             }
         }
     }
 
-    pivot = i;
-    QuickSort(start, pivot-start, start + (pivot-start)/2);
-    QuickSort(pivot+1, start+len-pivot-1, pivot+1 + (start+len-pivot-1)/2);
+    QuickSort(start, pivot-start, start);
+    QuickSort(pivot+1, start+len-pivot-1, pivot+1);
 
 }
 
@@ -45,7 +57,7 @@ int main() {
 
     getline(cin, input);
 
-    QuickSort(0, input.size(), input.size()/2);
+    QuickSort(0, input.size(), 0);
 
     printf("%d\n", atoi(input.c_str()));
 
