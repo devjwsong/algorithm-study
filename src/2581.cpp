@@ -29,9 +29,9 @@ bool isPrime(int n) {
 
 int main() {
 
-    int N, M;
-    scanf("%d", &N);
+    int M, N;
     scanf("%d", &M);
+    scanf("%d", &N);
 
     int sum = 0;
     int min = M + 1;
