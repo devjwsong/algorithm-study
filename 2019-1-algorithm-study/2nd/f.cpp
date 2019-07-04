@@ -1,66 +1,83 @@
 #include <iostream>
 #include <map>
-#include <utility>
-#include <vector>
+#include <set>
 
 using namespace std;
 
 int COW_NUM = 1e+9;
 
-int N;
-int G;
+int N, G;
 map<int, pair<int, int>> notes;
-map<int, int> valueAndNum;
-vector<int> amounts;
+map<int, int> idAndValue;
+map<int, int> valueAndNums;
 
 int main() {
-
+  
   scanf("%d %d", &N, &G);
 
   for (int i=0; i<N; ++i) {
-    int day, cow, change;
+    int day;
+    int cow;
+    int change;
     scanf("%d %d %d", &day, &cow, &change);
     notes.insert(pair<int, pair<int, int>> (day, pair<int, int> (cow, change)));
   }
 
-  amounts.assign(COW_NUM+1, G);
-  valueAndNum.insert(pair<int, int> (G, COW_NUM));
-
   int count = 0;
+  int max_amount = G;
+  valueAndNums.insert(pair<int, int> (G, COW_NUM));
 
   for (map<int, pair<int, int>>::iterator i=notes.begin(); i!=notes.end(); ++i) {
-    int curValue = amounts[i->second.first];
-    int nextValue = amounts[i->second.first] + i->second.second;
+
     int cow = i->second.first;
+    int change = i->second.second;
 
-    map<int, int>::iterator max_iter = valueAndNum.end();
-    --max_iter;
-
-    if (curValue == max_iter->first) {
-      if (nextValue > curValue) {
-        if (valueAndNum[curValue] > 1) {
+    if (change != 0) {
+      int before = 0;
+      map<int, int>::iterator ivIter = idAndValue.find(cow);
+      if (ivIter == idAndValue.end()) {
+        before = G;
+      } else {
+        before = ivIter->second;
+      }
+      int after = before + change;
+      
+      if (before == max_amount) {
+        if (valueAndNums[before] > 1) {
+          ++count;
+        } else {
+          int second = (--(--valueAndNums.end()))->first;
+          if (after <= second) {
+            ++count;
+          }
+        }
+      } else {
+        if (after >= max_amount) {
           ++count;
         }
-      } else if (nextValue < curValue) {
-        ++count;
       }
-    } else {
-      if (nextValue >= max_iter->first) {
-        ++count;
+
+      if (ivIter == idAndValue.end()) {
+        idAndValue.insert(pair<int, int> (cow, after));
+      } else {  
+        idAndValue[cow] = after;
       }
-    }
+      map<int, int>::iterator vnIter = valueAndNums.find(before);
+      if (vnIter->second == 1) {
+        valueAndNums.erase(before);
+      } else {
+        --valueAndNums[before];
+      }
+      
+      vnIter = valueAndNums.find(after);
+      if (vnIter != valueAndNums.end()) {
+        ++valueAndNums[after];
+      } else {
+        valueAndNums.insert(pair<int, int> (after, 1));
+      }
 
-    --valueAndNum[curValue];
-    if (valueAndNum[curValue] == 0) {
-      valueAndNum.erase(curValue);
+      max_amount = valueAndNums.rbegin()->first;
     }
-
-    if (valueAndNum[nextValue] != 0) {
-      ++valueAndNum[nextValue];
-    } else {
-      valueAndNum.insert(pair<int, int> (nextValue, 1));
-    }
-    
   }
 
   printf("%d\n", count);
