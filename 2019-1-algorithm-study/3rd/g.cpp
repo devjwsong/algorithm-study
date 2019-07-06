@@ -1,97 +1,90 @@
 #include <iostream>
-#include <vector>
-#include <utility>
 #include <stack>
+#include <vector>
+#include <set>
 
 using namespace std;
 
-int N, M;
-vector<vector<int>> map;
-vector<pair<int, int>> max_coords;
+int N, K, R;
+int map[101][101];
+set<pair<int, int>> roads[101][101];
+vector<pair<int, int>> cows;
 
-int dir_r[] = {-1, 0, 1, 0}; // 상, 좌, 하, 우
-int dir_c[] = {0, 1, 0, -1};
+int gNum = 1;
 
-int oppositeDir(int d) {
-  return (d+2)%4;
-}
+int dir_r[4] = {-1, 1, 0, 0};
+int dir_c[4] = {0, 0, -1, 1};
 
-int getMaxValue(int row, int col) {
-  stack<vector<int>> s;
-  s.push(vector<int> {map[row][col], 1, row, col, -1});
-
-  int answer = 0;
+void dfs(int row, int col) {
+  stack<pair<int, int>> s;
+  s.push(pair<int, int> (row, col));
 
   while(1) {
     if (s.empty()) {
       break;
     }
 
-    vector<int> current = s.top();
+    pair<int, int> cur = s.top();
     s.pop();
 
-    if (current[1] == 4) {
-      if (current[0] >= answer) {
-        answer = current[0];
-      }
+    if (map[cur.first][cur.second] != 0 && map[cur.first][cur.second] != gNum) {
+      break;
     } else {
-      for (int i=0; i<4; ++i) {
-        if (current[4] != i) {
-          int next_r = current[2] + dir_r[i];
-          int next_c = current[3] + dir_c[i];
+      map[cur.first][cur.second] = gNum;
 
-          if (next_r < 0 || next_r >= N || next_c < 0 || next_c >= M) {
-            continue;
-          } else {
-            vector<int> next = {current[0] + map[next_r][next_c], current[1]+1, next_r, next_c, oppositeDir(i)};
-            s.push(next);
+      for (int d=0; d<4; ++d) {
+        int next_r = cur.first + dir_r[d];
+        int next_c = cur.second + dir_c[d];
+
+        if (next_r > 0 && next_r <= N && next_c > 0 && next_c <= N) {
+          if (roads[cur.first][cur.second].count(pair<int, int> (next_r, next_c)) == 0) {
+            if (map[next_r][next_c] == 0) {
+              s.push(pair<int, int> (next_r, next_c));
+            }
           }
         }
       }
     }
   }
-
-  return answer;
 }
 
 int main() {
-  
-  scanf("%d %d", &N, &M);
 
-  int max_value = 0;
-  for (int r=0; r<N; ++r) {
-    vector<int> row;
-    for (int c=0; c<M; ++c) {
-      int input;
-      scanf("%d", &input);
-      row.push_back(input);
+  scanf("%d %d %d", &N, &K, &R);
 
-      if (input >= max_value) {
-        max_value = input;
+  for (int i=0; i<R; ++i) {
+    int r1, c1, r2, c2;
+    scanf("%d %d %d %d", &r1, &c1, &r2, &c2);
+    roads[r1][c1].insert(pair<int, int> (r2, c2));
+    roads[r2][c2].insert(pair<int, int> (r1, c1));
+  }
+
+  cows.assign(K+1, pair<int, int> (0, 0));
+
+  for (int i=1; i<=K; ++i) {
+    int r, c;
+    scanf("%d %d", &r, &c);
+    cows[i] = pair<int, int> (r, c);
+  }
+
+  for (int r=1; r<=N; ++r) {
+    for (int c=1; c<=N; ++c) {
+      dfs(r, c);
+      ++gNum;
+    }
+  }
+
+  int count = 0;
+
+  for (int i=1; i<=K-1; ++i) {
+    for (int j=i+1; j<=K; ++j) {
+      if (map[cows[i].first][cows[i].second] != map[cows[j].first][cows[j].second]) {
+        ++count;
       }
     }
-    map.push_back(row);
   }
 
-  for (int r=0; r<N; ++r) {
-    for (int c=0; c<M; ++c) {
-      if (map[r][c] == max_value) {
-        max_coords.push_back(pair<int, int> (r, c));
-      }
-    }
-  }
-
-  int answer = 0;
-
-  for (int i=0; i<max_coords.size(); ++i) {
-    int result = getMaxValue(max_coords[i].first, max_coords[i].second);
-
-    if (result >= answer) {
-      answer = result;
-    }
-  }
-
-  printf("%d\n", answer);
+  printf("%d\n", count);  
 
   return 0;
 }
