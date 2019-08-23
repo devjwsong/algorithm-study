@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 
@@ -7,12 +8,15 @@ int T;
 int A, B;
 
 struct State {
-    State(int _num) {
-        num = _num;
+    State (int _cur, int _prev, char _com) {
+        cur = _cur;
+        prev = _prev;
+        com = _com;
     }
 
-    vector<char> com;
-    int num;
+    int cur;
+    int prev;
+    char com;
 };
 
 int D(int input) {
@@ -46,9 +50,13 @@ int R(int input) {
     }
 }
 
-vector<char> bfs() {
+void bfs() {
+    
+    struct State init(-1, -1, '?');
+    vector<struct State> memo (10000, init);
+
     queue<struct State> q;
-    struct State init(A);
+    init.cur = A;
     q.push(init);
 
     while(1) {
@@ -59,30 +67,55 @@ vector<char> bfs() {
         struct State cur = q.front();
         q.pop();
 
-        if (cur.num == B) {
-            return cur.com;
+        if (cur.cur == B) {
+            break;
         } else {
-            struct State next_D (D(cur.num));
-            next_D.com = cur.com;
-            next_D.com.push_back('D');
-            q.push(next_D);
-
-            struct State next_S (S(cur.num));
-            next_S.com = cur.com;
-            next_S.com.push_back('S');
-            q.push(next_S);
-
-            struct State next_L (L(cur.num));
-            next_L.com = cur.com;
-            next_L.com.push_back('L');
-            q.push(next_L);
-
-            struct State next_R (R(cur.num));
-            next_R.com = cur.com;
-            next_R.com.push_back('R');
-            q.push(next_R);
+            for (int i=0; i<4; ++i) {
+                if (i == 0) {
+                    int new_num = D(cur.cur);
+                    if (memo[new_num].cur == -1) {
+                        struct State next (new_num, cur.cur, 'D');
+                        q.push(next);
+                        memo[new_num] = next;
+                    }
+                } else if (i == 1) {
+                    int new_num = S(cur.cur);
+                    if (memo[new_num].cur == -1) {
+                        struct State next (new_num, cur.cur, 'S');
+                        q.push(next);
+                        memo[new_num] = next;
+                    }
+                } else if (i == 2) {
+                    int new_num = L(cur.cur);
+                    if (memo[new_num].cur == -1) {
+                        struct State next (new_num, cur.cur, 'L');
+                        q.push(next);
+                        memo[new_num] = next;
+                    }
+                } else if (i == 3) {
+                    int new_num = R(cur.cur);
+                    if (memo[new_num].cur == -1) {
+                        struct State next (new_num, cur.cur, 'R');
+                        q.push(next);
+                        memo[new_num] = next;
+                    }
+                }
+            }
         }
     }
+
+    string answer = "";
+    int cur = B;
+    while(1) {
+        if (cur == A) {
+            break;
+        }
+
+        answer = memo[cur].com + answer;
+        cur = memo[cur].prev;
+    }
+
+    cout<<answer<<"\n";
 }
 
 int main() {
@@ -92,12 +125,10 @@ int main() {
     for (int t=1; t<=T; ++t) {
         cin>>A>>B;
 
-        vector<char> result = bfs();
+        struct State init(-1, -1, '?');
 
-        for (int i=0; i<result.size(); ++i) {
-            cout<<result[i];
-        }
-        cout<<"\n";
+        bfs();
+
     }
 
     return 0;
