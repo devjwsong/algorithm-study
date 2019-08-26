@@ -1,73 +1,90 @@
 #include <iostream>
+#include <vector>
+#include <queue>
 
 using namespace std;
 
-class Point {
-    public:
-        int x;
-        int y;
+int n;
+// int dist[100][100];
+// const int INF = 100; // 99 + 1
+int map[100][100];
 
-        Point(int _x, int _y) {
-            x = _x;
-            y = _y;
-        }
+// void floyd_warshall(){
+//     for (int i=0 ; i<n ; i++){
+//         for (int j=0 ;j<n ; j++){
+//             if (map[i][j] == 0) dist[i][j] = INF;
+//             else dist[i][j] = 1;
+//         }
+//     }
+//     for (int k=0 ; k<n ; k++){
+//         for (int i=0 ; i<n ; i++){
+//             for (int j=0 ; j<n ; j++){
+//                 if (dist[i][j] > dist[i][k] + dist[k][j]){
+//                     dist[i][j] = dist[i][k] + dist[k][j];
+//                 }
+//             }
+//         }
+//     }
+//     for (int i=0 ; i<n ; i++){
+//         for (int j=0 ; j<n ; j++){
+//             if (dist[i][j] == INF) cout<<"0 ";
+//             else cout<<"1 ";
+//         }
+//         cout<<"\n";
+//     }
+// }
 
-        void print() {
-            cout<<"(x, y): ("<<x<<", "<<y<<")"<<"\n";
-        }
 
-        Point operator + (Point& other) {
-            int new_x = x + other.x;
-            int nex_y = y + other.y;
-            return Point(new_x, nex_y);
-        }
+vector<int> adj[100];
+bool visited[100];
+int component[100];
+int temp_comp = 0;
 
-        Point operator - (Point& other) {
-            int new_x = x - other.x;
-            int nex_y = y - other.y;
-            return Point(new_x, nex_y);
-        }
-
-        bool operator > (Point& other) {
-            return x > other.x;
-        }
-
-        bool operator < (Point& other) {
-            return x < other.x;
-        }
-
-        bool operator == (Point& other) {
-            return x == other.x;
-        }
-};
-
-int main() {
-
-    Point p1 (1, 2);
-    Point p2 (4, 5);
-
-    cout<<"p1 ";
-    p1.print();
-
-    cout<<"p2 ";
-    p2.print();
-
-    Point p3 = p1 + p2;
-    Point p4 = p1 - p2;
-
-    cout<<"p3 ";
-    p3.print();
-
-    cout<<"p4 ";
-    p4.print();
-
-    if (p1 > p2) {
-        cout<<"p1 is bigger"<<"\n";
-    } else if (p1 < p2) {
-        cout<<"p2 is bigger"<<"\n";
-    } else {
-        cout<<"p1 and p2 is equal"<<"\n";
+void dfs(int x){
+    component[x] = temp_comp;
+    visited[x] = true;
+    for (int next: adj[x]){
+        dfs(next);
     }
+}
+
+void search(){
+    for (int i=0 ; i<n ; i++){
+        visited[i] = false;
+        component[i] = 0;
+        for (int j=0 ; j<n ; j++){
+            if (map[i][j] == 1) adj[i].push_back(j);
+        }
+    }
+
+    for (int i=0 ; i<n ; i++){
+        if (!visited[i]){
+            temp_comp++;
+            dfs(i);
+        }
+    }
+    for (int i=0; i<n; i++) {
+        cout<<component[i]<<"\n";
+    }
+    for (int i=0 ; i<n ; i++){
+        for (int j=0 ; j<n ; j++){
+            if (component[j] == component[i]) cout<<"1 ";
+            else cout<<"0 ";
+        }
+        cout<<"\n";
+    }
+}
+
+int main(){
+    cin>>n;
+    for (int i=0 ; i<n ; i++){
+        for (int j=0 ; j<n ; j++){
+            cin>>map[i][j];
+        }
+    }
+
+    // floyd_warshall();
+    search();
 
     return 0;
 }
