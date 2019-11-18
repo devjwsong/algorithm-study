@@ -1,2 +1,2 @@
-# Algorithm
+# algorithm
 Algorithm Practice with C++
