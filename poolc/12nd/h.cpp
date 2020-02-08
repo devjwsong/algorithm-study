@@ -36,6 +36,12 @@ int main() {
         }
 
         for (int r=1; r<=N; ++r) {
+            for (int c=1; c<(1<<11); ++c) {
+                memo[r][c] = -INF;
+            }
+        }
+
+        for (int r=1; r<=N; ++r) {
             update(r, 1<<(M+1));
         }
         
