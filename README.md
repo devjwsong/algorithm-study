@@ -1,2 +1,2 @@
 # algorithm-study
-Algorithm problem solving in C++
+Algorithm problem solving in C++.
