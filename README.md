@@ -1,2 +1,2 @@
-# algorithm
-Algorithm Practice with C++
+# algorithm-study
+Algorithm problem solving in C++
