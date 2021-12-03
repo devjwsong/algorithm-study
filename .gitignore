@@ -34,3 +34,4 @@
 .vscode
 a.out
 venv/
+.DS_Store
