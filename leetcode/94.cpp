@@ -45,6 +45,7 @@ public:
             }
 
             cur = s.top();
+            s.pop();
             answer.push_back(cur->val);
 
             cur = cur->right;
