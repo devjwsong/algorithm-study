@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <limits>
+#include <limits.h>
 
 using namespace std;
 
