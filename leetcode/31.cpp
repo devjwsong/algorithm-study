@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int start = -1;
+        for (int i=nums.size()-2; i>=0; --i) {
+            if (nums[i] < nums[i+1]) {
+                start = i;
+                break;
+            }
+        }
+
+        if (start != -1) {
+            for (int i=nums.size()-1; i>=0; --i) {
+                if (nums[i] > nums[start]) {
+                    swap(nums[i], nums[start]);
+                    break;
+                }
+            }
+        }
+        
+        reverse(nums.begin() + start + 1, nums.end());
+    }
+};
+
+
+int main() {
+
+    int n;
+    scanf("%d", &n);
+
+    vector<int> nums;
+    for (int i=0; i<n; ++i) {
+        int val;
+        scanf(" %d", &val);
+        nums.push_back(val);
+    }
+
+    Solution* sol = new Solution();
+    sol->nextPermutation(nums);
+
+    for (int i=0; i<n; ++i) {
+        printf("%d ", nums[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
