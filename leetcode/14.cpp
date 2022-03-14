@@ -34,7 +34,7 @@ int main() {
     vector<string> strs;
 
     int n = 0;
-    scanf("%d", &n);\
+    scanf("%d", &n);
     getchar();
 
     for (int i=0; i<n; ++i) {
