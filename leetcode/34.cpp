@@ -43,42 +43,44 @@ public:
 class Solution2 {
 public:
     int findFirst(vector<int>& nums, int target) {
-        int left = 0, right = nums.size()-1;
-        while(left <= right) {
+        int left = 0, right = nums.size();
+        while (left + 1 < right) {
             int mid = (left + right) / 2;
             if (nums[mid] == target) {
                 if (mid == 0 || nums[mid-1] != target) {
                     return mid;
                 }
 
-                right = mid - 1;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
-            } else  {
-                left = mid + 1;
+                right = mid;
+            } else if (nums[mid] < target) {
+                left = mid;
+            } else {
+                right = mid;
             }
         }
 
+        if (nums[left] == target) return left;
         return -1;
     }
 
     int findLast(vector<int>& nums, int target) {
-        int left = 0, right = nums.size()-1;
-        while(left <= right) {
+        int left = -1, right = nums.size()-1;
+        while(left + 1 < right) {
             int mid = (left + right) / 2;
             if (nums[mid] == target) {
                 if (mid == nums.size()-1 || nums[mid+1] != target) {
                     return mid;
                 }
 
-                left = mid + 1;
+                left = mid;
             } else if (nums[mid] > target) {
-                right = mid - 1;
+                right = mid;
             } else  {
-                left = mid + 1;
+                left = mid;
             }
         }
 
+        if (nums[right] == target) return right;
         return -1;
     }
 
