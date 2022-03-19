@@ -16,43 +16,24 @@ struct TreeNode {
 
 class Solution {
 public:
-    vector<int> getTreeInfo(TreeNode* root) {
-        if (root->left == nullptr && root->right == nullptr) {
-            return vector<int> {1, root->val, root->val};
+    vector<int> vals;
 
-        } else if (root->right == nullptr) {
-            vector<int> leftInfo = getTreeInfo(root->left);
-            if (leftInfo[0] == 1 && leftInfo[2] < root->val) {
-                return vector<int> {1, leftInfo[1], root->val};
-            } else {
-                return vector<int> {0, root->val, root->val};
-            }
+    void inorder(TreeNode* root) {
+        if (root == nullptr) return;
 
-        } else if (root->left == nullptr) {
-            vector<int> rightInfo = getTreeInfo(root->right);
-            if (rightInfo[0] == 1 && rightInfo[1] > root->val) {
-                return vector<int> {1, root->val, rightInfo[2]};
-            } else {
-                return vector<int> {0, root->val, root->val};
-            }
-
-        } else {
-            vector<int> leftInfo = getTreeInfo(root->left);
-            vector<int> rightInfo = getTreeInfo(root->right);
-            if (leftInfo[0] && rightInfo[0] && root->val > leftInfo[2] && root->val < rightInfo[1]) {
-                return vector<int> {1, leftInfo[1], rightInfo[2]};
-            } else {
-                return vector<int> {0, root->val, root->val};
-            }
-        }
+        inorder(root->left);
+        vals.push_back(root->val);
+        inorder(root->right);
     }
 
     bool isValidBST(TreeNode* root) {
-        vector<int> treeInfo = getTreeInfo(root);
-        if (treeInfo[0] == 1) {
-            return true;
-        } else {
-            return false;
+        inorder(root);
+        for (int i=0; i<vals.size()-1; ++i) {
+            if (vals[i] >= vals[i+1]) {
+                return false;
+            }
         }
+
+        return true;
     }
 };
