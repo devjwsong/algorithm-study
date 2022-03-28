@@ -50,11 +50,3 @@ public:
         return false;
     }
 };
-
-
-class Solution2 {
-public:
-    bool hasCycle(ListNode *head) {
-
-    }
-};
