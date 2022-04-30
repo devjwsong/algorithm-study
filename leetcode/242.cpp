@@ -3,7 +3,7 @@
 
 using namespace std;
 
-// Hash map
+// Hash map (Unicode included)
 class Solution1 {
 public:
     bool isAnagram(string s, string t) {
@@ -27,7 +27,7 @@ public:
 };
 
 
-// Array
+// Array (only ASCII)
 class Solution2 {
 public:
     bool isAnagram(string s, string t) {
