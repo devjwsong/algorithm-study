@@ -65,7 +65,7 @@ public:
             if (res) {
                 left = mid;
             } else {
-                right = mid-1;
+                right = mid;
             }
         }
 
