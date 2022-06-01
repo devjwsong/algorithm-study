@@ -5,6 +5,15 @@
 using namespace std;
 
 
+/*
+Next permutation always makes the certain right part of the array sorted in descending order.
+So, first find the previous element before the descending part begins.
+If start == -1, this means the array is the last state, so simply reversing makes the array the original state.
+If start != -1, then this start point should be integrated to the right part after next permutation.
+So, find the first larger value than start, which should be moved to the next start position.
+The descending part is still sorted after the swap, which is obvious.
+Then reverse the descending part to start over again.
+*/
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
