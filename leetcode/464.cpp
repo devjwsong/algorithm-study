@@ -24,12 +24,12 @@ public:
         for (int b=0; b<maxChoosableInteger; ++b) {
             int bit = (1 << b);
             if ((curBits & bit) == 0) {
-                if ((b+1) >= desiredTotal) {  // (1)
+                if ((b+1) >= desiredTotal) {
                     bits2res[curBits] = true;
                     return true;
                 }
 
-                if (!dfs(curBits+bit, maxChoosableInteger, desiredTotal-(b+1), total-(b+1))) {  // (2)
+                if (!dfs(curBits+bit, maxChoosableInteger, desiredTotal-(b+1), total-(b+1))) {
                     bits2res[curBits] = true;
                     return true;
                 }
