@@ -15,7 +15,6 @@ First, the vector heights contains the maximum height of index i.
 And lefts has the farthest left index which has the same or higher height of the index i.
 Likewise, rights has the farthest right indext that has the same or higher height of the index i.
 Then the maximum area made at the index i is (rights[i]-lefts[i]+1) * heights[i].
-If there is no 1, then rights[i]-lefts[i] is negative, and this cannot be larger than 0.
 */
 class Solution1 {
 public:
