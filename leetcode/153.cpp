@@ -6,24 +6,23 @@ using namespace std;
 class Solution {
 public:
     int findMin(vector<int>& nums) {
-        int left = 0, right = nums.size()-1;
-        while (left < right) {
-            if (nums[left] < nums[right]) {
-                return nums[left];
-            }
-
+        int n = nums.size();
+        
+        int left = 0, right = n-1;
+        while (left + 1 < right) {
             int mid = (left + right) / 2;
-            if (left + 1 == mid && mid + 1 == right) return min(nums[right], nums[mid]);
-            if (left == mid) return min(nums[left], nums[right]);
-
-            if (nums[left] < nums[mid]) {
-                left = mid;
+            if (nums[mid] > nums[left]) {
+                if (nums[mid] > nums[right]) {
+                    left = mid;
+                } else {
+                    right = mid;
+                }
             } else {
                 right = mid;
             }
         }
 
-        return nums[left];
+        return min(nums[left], nums[right]);
     }
 };
 
