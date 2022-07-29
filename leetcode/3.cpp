@@ -5,6 +5,16 @@
 using namespace std;
 
 
+/*
+A hash map is used to memorize the last index of each character.
+And curStr is the current longest substring only containing unique letters.
+If s[i] is not in m, then it is unique so there is no problem with including it.
+If s[i] is in m, that means somewhere another same letter already showed up.
+So first we update the answer and get the new starting point.
+If current start is higher than m[s[i]]+1, m[s[i]] will be updated to the new index anyway so we keep the starting position.
+If m[s[i]]+1 is higher, that means m[s[i]] is contained in curStr, 
+so in order to start again we should set the new starting point to m[s[i]]+1.
+*/
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
