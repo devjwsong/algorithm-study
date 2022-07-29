@@ -3,6 +3,8 @@
 
 using namespace std;
 
+
+// dp[i][j]: is substring [i:j] palindrome?
 class Solution {
 public:
     string longestPalindrome(string s) {
