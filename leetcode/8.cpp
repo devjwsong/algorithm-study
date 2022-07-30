@@ -4,6 +4,12 @@
 using namespace std;
 
 
+/*
+The most important partis the line [34, 37].
+If 0 <= digit <= 7, answer becomes INT32_MAX when it is bigger than or equal to 214748365.
+If digit > 7, answer becomes INT32_MAX when it is bigger than or equal to 214748634.
+The negative case is the same since -2147486348 is equal to INT32_MIN.
+*/
 class Solution {
 public:
     int myAtoi(string s) {
