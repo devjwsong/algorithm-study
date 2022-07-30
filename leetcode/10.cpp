@@ -12,11 +12,11 @@ public:
         int m = s.size(), n = p.size();
         if (ss == m && ps == n) return true;
         if (ss == m) {
-            while (ps < n) {
+            while (ps < n-1) {
                 if (p[ps] != '*' && p[ps+1] != '*') return false;
                 ++ps;
             }
-            return p[ps-1] == '*';
+            return p[ps] == '*';
         }
         if (ps == n) return false;
     
@@ -24,7 +24,7 @@ public:
             return dp[ss][ps];
         }
 
-        if (ps < n-1 && p[ps+1] == '*') {  // * mathcing but only the case of 0.
+        if (ps < n-1 && p[ps+1] == '*') {  // * matching but only the case of 0.
             if (search(s, p, ss, ps+2)) {
                 return dp[ss][ps] = true;
             }
@@ -36,10 +36,10 @@ public:
         }
 
         if (p[ps] == '*') {  // * matching passed from previous function.
-            bool res1 = search(s, p, ss, ps+1);
+            bool res1 = search(s, p, ss, ps+1);  // Finish *.
             bool res2 = false;
             if (ps > 0 && (s[ss] == p[ps-1] || p[ps-1] == '.')) {
-                res2 = search(s, p, ss+1, ps);
+                res2 = search(s, p, ss+1, ps);  // Keep *.
             }
 
             return dp[ss][ps] = res1 || res2;
