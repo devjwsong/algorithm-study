@@ -3,32 +3,31 @@
 
 using namespace std;
 
+
+/*
+First candidate is the widest one, which is 0 ~ n-1.
+Then we iteratively narrow down the width, and in order to make a larger container, the height must increase.
+And the height is determined by the shorter wall.
+So, we move the shorter one and check the change of the amount.
+If the height are the same, then it doesn't matter if we move left or right, since it is bounded one of them anyway.
+So anyway one of them should be moved, and if the moved one becomes higher, than the other wall will also be changed at the next step.
+*/
 class Solution {
 public:
     int maxArea(vector<int>& height) {
         int left = 0, right = height.size()-1;
-        int maxValue = (min(height[left], height[right])) * (right-left);
-        bool leftMove = true;
-        if (height[left] > height[right]) {
-            leftMove = false;
-        }
+        int answer = 0;
 
-        while(right > left) {
-            if (leftMove) {
+        while (left < right) {
+            answer = max(answer, (right-left) * min(height[left], height[right]));
+            if (height[left] < height[right]) {
                 ++left;
-                if (height[left] > height[right]) {
-                    leftMove = false;
-                }
             } else {
                 --right;
-                if (height[right] > height[left]) {
-                    leftMove = true;
-                }
             }
-            maxValue = max(maxValue, (min(height[left], height[right])) * (right-left));
         }
 
-        return maxValue;
+        return answer;
     }
 };
 
