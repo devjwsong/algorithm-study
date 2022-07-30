@@ -4,13 +4,11 @@
 
 using namespace std;
 
-int MAX = INT_MAX;
-
 
 class Solution {
 public:
     bool isValid(string reversed, int pre) {
-        string max = to_string(MAX);
+        string max = to_string(INT32_MAX);
         
         if (pre == -1) {
             max = max.substr(0, max.size()-1) + '8';
@@ -20,17 +18,9 @@ public:
             return true;
         } else if (reversed.size() > max.size()) {
             return false;
-        } else {
-            for (int i=0; i<reversed.size(); ++i) {
-                if (reversed[i] > max[i]) {
-                    return false;
-                } else if (reversed[i] < max[i]) {
-                    return true;
-                }
-            }
-            
-            return true;
         }
+
+        return reversed <= max;
     }
 
     int reverse(int x) {
