@@ -18,20 +18,22 @@ public:
     };
 
     vector<string> letterCombinations(string digits) {
-        if (digits.size() == 1) {
+        int n = digits.size();
+        if (n == 0) return {};
+        if (n == 1) {
             string options = map[digits[0]];
-            vector<string> combs (options.size(), "");
+            vector<string> results (options.size(), "");
             for (int i=0; i<options.size(); ++i) {
-                combs[i] = options.substr(i, 1);
+                results[i] = options.substr(i, 1);
             }
-            return combs;
+            return results;
         }
 
         vector<string> results;
         string options = map[digits[0]];
         for (int i=0; i<options.size(); ++i) {
             char first = options[i];
-            vector<string> subResults = letterCombinations(digits.substr(1, digits.size()-1));
+            vector<string> subResults = letterCombinations(digits.substr(1, n-1));
             for (int j=0; j<subResults.size(); ++j) {
                 results.push_back(subResults[j].insert(0, 1, first));
             }
