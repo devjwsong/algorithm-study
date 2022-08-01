@@ -3,6 +3,12 @@
 using namespace std;
 
 
+/*
+A few tricks!
+1. Make divisor negative since the range is larger.
+Answer always becomes negative, so post-checking is necessary.
+2. Use shift for much faster calculation.
+*/
 class Solution {
 public:
     int UPPERBOUND = 1073741824;
