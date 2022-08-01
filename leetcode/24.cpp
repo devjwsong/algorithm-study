@@ -35,7 +35,7 @@ public:
             next->next = cur;
             prev = cur;
             cur = cur->next;
-            if (cur == nullptr || cur->next == nullptr) {
+            if (cur == nullptr) {
                 break;
             } else {
                 next = cur->next;
