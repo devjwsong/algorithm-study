@@ -14,10 +14,7 @@ public:
                 nums[idx] = nums[i];
             }
         }
-
-        if (nums.size() > 0) {
-            idx += 1;
-        }
+        ++idx;
 
         return idx;
     }
