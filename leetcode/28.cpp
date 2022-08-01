@@ -1,17 +1,27 @@
-// KMP Algorithm
-
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-
+/*
+KMP algorithm.
+Time: O(m+n)
+Space: O(n)
+*/
 class Solution {
 public:
-    vector<int> getPi(string needle) {
-        vector<int> pi (needle.size(), 0);
+    /*
+    This part is the most difficult...
+    The idea is using the previous pi value to calculate a new pi value of current index.
+    That is, it is another KMP algorithm but matching needle with needle.
+    If needle[i] != needle[j], move j into pi[j-1], which is the length of prefix of [0:j-1].
+    If needle[i] == needle[i], the length of prefix + 1(j) becomes the pi[i].
+    */
+    vector<int> getPi(string& needle) {
+        int n = needle.size();
+        vector<int> pi (n, 0);
         int j = 0;
-        for (int i=1; i<needle.size(); ++i) {
+        for (int i=1; i<n; ++i) {
             while (j > 0 && needle[i] != needle[j]) {
                 j = pi[j-1];
             }
@@ -26,33 +36,27 @@ public:
     }
 
     int strStr(string haystack, string needle) {
-        if (needle.size() == 0) {
-            return 0;
-        } else if (haystack.size() < needle.size()) {
-            return -1;
-        } else {
-            vector<int> pi = getPi(needle);
-            int cur = 0, matched = 0;
-            while (cur < haystack.size()) {
-                if (haystack[cur+matched] == needle[matched]) {
-                    matched += 1;
+        int m = haystack.size(), n = needle.size();
+        if (m < n) return -1;
+    
+        vector<int> pi = getPi(needle);
+        int cur = 0, matched = 0;
+        while (cur < m) {
+            if (haystack[cur+matched] == needle[matched]) {
+                ++matched;
 
-                    if (matched == needle.size()) {
-                        return cur;
-                    }
-
+                if (matched == n) return cur;
+            } else {
+                if (matched == 0) {
+                    ++cur;
                 } else {
-                    if (matched == 0) {
-                        cur += 1;
-                    } else {
-                        cur += (matched - pi[matched-1]);
-                        matched = pi[matched-1];
-                    }
+                    cur += (matched - pi[matched-1]);
+                    matched = pi[matched-1];
                 }
             }
-
-            return -1;
         }
+
+        return -1;
     }
 };
 
