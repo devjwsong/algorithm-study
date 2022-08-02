@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ int main() {
     getline(cin, s);
 
     Solution* sol = new Solution();
-    int answer = sol->longestValidParentheses(sol);
+    int answer = sol->longestValidParentheses(s);
     cout<<answer<<"\n";
 
     return 0;
