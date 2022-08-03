@@ -4,6 +4,11 @@
 using namespace std;
 
 
+/*
+Divide & Conquer.
+Time: O(logn).
+Space: O(nlogn).
+*/
 class Solution1 {
 public:
     vector<int> findPartialRange(vector<int>& nums, int left, int right, int target) {
@@ -26,61 +31,70 @@ public:
         } else if (leftPart[0] == -1 && rightPart[0] != -1) {
             return rightPart;
         } else {
-            return vector<int> {leftPart[0], rightPart[rightPart.size()-1]};
+            return {leftPart[0], rightPart[1]};
         }
     }
 
     vector<int> searchRange(vector<int>& nums, int target) {
         if (nums.size() == 0) {
-            return vector<int> {-1, -1};
+            return {-1, -1};
         }
 
         return findPartialRange(nums, 0, nums.size(), target);
     }
 };
 
-// More efficient
+
+/*
+Binary Search.
+Time: O(logn).
+Space: O(1).
+*/
 class Solution2 {
 public:
     int findFirst(vector<int>& nums, int target) {
-        int left = 0, right = nums.size();
+        int n = nums.size();
+        int left = 0, right = n-1;
         while (left + 1 < right) {
             int mid = (left + right) / 2;
             if (nums[mid] == target) {
-                if (mid == 0 || nums[mid-1] != target) {
+                if (mid > 0 && nums[mid-1] == target) {
+                    right = mid;
+                } else {
                     return mid;
                 }
-
+            } else if (nums[mid] > target) {
                 right = mid;
             } else if (nums[mid] < target) {
                 left = mid;
-            } else {
-                right = mid;
             }
         }
 
         if (nums[left] == target) return left;
+        if (nums[right] == target) return right;
         return -1;
     }
 
     int findLast(vector<int>& nums, int target) {
-        int left = -1, right = nums.size()-1;
-        while(left + 1 < right) {
+        int n = nums.size();
+        int left = 0, right = n-1;
+        while (left + 1 < right) {
             int mid = (left + right) / 2;
             if (nums[mid] == target) {
-                if (mid == nums.size()-1 || nums[mid+1] != target) {
+                if (mid < n-1 && nums[mid+1] == target) {
+                    left = mid;
+                } else {
                     return mid;
                 }
-
-                left = mid;
             } else if (nums[mid] > target) {
                 right = mid;
-            } else  {
+            } else if (nums[mid] < target) {
                 left = mid;
             }
         }
 
         if (nums[right] == target) return right;
+        if (nums[left] == target) return left;
         return -1;
     }
 
