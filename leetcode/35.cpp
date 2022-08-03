@@ -7,25 +7,20 @@ using namespace std;
 class Solution {
 public:
     int searchInsert(vector<int>& nums, int target) {
-        int start = 0, end = nums.size();
-        while(start+1 < end) {
-            int mid = (start + end) / 2;
-            if (nums[mid] == target) {
-                return mid;
-            }
-
-            if (nums[mid] > target) {
-                end = mid;
+        int n = nums.size();
+        int left = 0, right = n-1;
+        while (left + 1 < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] >= target) {
+                right  = mid;
             } else {
-                start = mid;
+                left = mid;
             }
         }
 
-        if (nums[start] >= target) {
-            return start;
-        } else {
-            return start+1;
-        }
+        if (nums[right] < target) return right+1;
+        if (nums[left] < target) return right;
+        return left;
     }
 };
 
