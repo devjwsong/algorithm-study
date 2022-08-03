@@ -7,32 +7,40 @@ using namespace std;
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int left = 0, right = nums.size();
-        while (left < right) {
-            if (nums[left] == target) {
-                return left;
-            }
-
+        int left = 0, right = nums.size()-1;
+        while (left + 1 < right) {
             int mid = (left + right) / 2;
-            if (mid == left) {
-                return -1;
-            }
-            
-            if (nums[left] < nums[mid]) {
-                if (nums[left] <= target && target < nums[mid]) {
+            if (nums[mid] > target) {
+                if (target > nums[left]) {
                     right = mid;
+                } else if (target < nums[left]) {
+                    if (nums[mid] > nums[right]) {
+                        left = mid;
+                    } else {
+                        right = mid;
+                    }
                 } else {
+                    return left;
+                }
+            } else if (nums[mid] < target) {
+                if (nums[mid] > nums[left]) {
                     left = mid;
+                } else {
+                    if (target > nums[right]) {
+                        right = mid;
+                    } else if (target < nums[right]) {
+                        left = mid;
+                    } else {
+                        return right;
+                    }
                 }
             } else {
-                if (nums[mid] <= target && target <= nums[right-1]) {
-                    left = mid;
-                } else {
-                    right = mid;
-                }
+                return mid;
             }
-        }
+        }   
 
+        if (nums[left] == target) return left;
+        if (nums[right] == target) return right;
         return -1;
     }
 };
