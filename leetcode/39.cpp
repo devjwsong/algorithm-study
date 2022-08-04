@@ -8,26 +8,28 @@ using namespace std;
 class Solution {
 public:
     vector<vector<int>> answer;
+    vector<int> cur;
 
-    void search(vector<int>& candidates, vector<int> cur, int minIdx, int remain) {
-        if (remain == 0) {
+    void search(vector<int>& candidates, int& target, int sum, int idx) {
+        if (sum > target) return;
+        if (sum == target) {
             answer.push_back(cur);
-        } else if (remain > 0) {
-            for (int i=minIdx; i<candidates.size(); ++i) {
-                if (candidates[i] <= remain) {
-                    vector<int> next = cur;
-                    next.push_back(candidates[i]);
-                    search(candidates, next, i, remain-candidates[i]);
-                }
-            }
+            return;
+        }
+
+        for (int i=idx; i<candidates.size(); ++i) {
+            cur.push_back(candidates[i]);
+            search(candidates, target, sum + candidates[i], i);
+            cur.pop_back();
         }
     }
 
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         sort(candidates.begin(), candidates.end(), greater<int>());
-
         for (int i=0; i<candidates.size(); ++i) {
-            search(candidates, vector<int> {candidates[i]}, i, target-candidates[i]);
+            cur.push_back(candidates[i]);
+            search(candidates, target, candidates[i], i);
+            cur.pop_back();
         }
 
         return answer;
