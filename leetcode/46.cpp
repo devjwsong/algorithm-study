@@ -36,16 +36,8 @@ public:
         while(1) {
             answer.push_back(nums);
             nextPermutation(nums);
-            
-            bool isInit = true;
-            for (int i=0; i<nums.size(); ++i) {
-                if (nums[i] != init[i]) {
-                    isInit = false;
-                    break;
-                }
-            }
 
-            if (isInit) {
+            if (init == nums) {
                 break;
             }
         }
