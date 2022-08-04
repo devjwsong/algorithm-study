@@ -42,7 +42,12 @@ public:
 };
 
 
-// Min/Max two pointers without additional arrays.
+/*
+Min/Max two pointers without additional arrays.
+It is similar apporach with 11.cpp. 
+The difference is the problem 11's objective is to find the maximum amount.
+And this problem's is just calculating the total amount of water.
+*/ 
 class Solution2 {
 public:
     int trap(vector<int>& height) {
