@@ -15,18 +15,23 @@ public:
     vector<vector<string>> answer;
     vector<string> cur;
 
-    bool isValid(int r, int c) {
-        int n = cur.size();
-        for (int rr=0; rr<n; ++rr) {
+    bool isValid(int n, int r, int c) {
+        for (int rr=0; rr<r; ++rr) {
             if (cur[rr][c] == 'Q') return false;
         }
 
-        for (int rr=r, cc=c; rr >= 0 && cc >= 0; --rr, --cc) {
+        int rr = r, cc = c;
+        while (rr >= 0 && cc >= 0) {
             if (cur[rr][cc] == 'Q') return false;
+            --rr;
+            --cc;
         }
 
-        for (int rr=r, cc=c; rr >= 0 && cc < n; --rr, ++cc) {
+        rr = r, cc = c;
+        while (rr >= 0 && cc < n) {
             if (cur[rr][cc] == 'Q') return false;
+            --rr;
+            ++cc;
         }
 
         return true;
@@ -38,27 +43,23 @@ public:
             return;
         }
 
-        int r = numQueens;
         for (int c=0; c<n; ++c) {
-            if (isValid(r, c)) {
-                cur[r][c] = 'Q';
-                search(n, numQueens+1);
-                cur[r][c] = '.';
+            if (isValid(n, numQueens, c)) {
+                cur[numQueens][c] = 'Q';
+                search(n, numQueens + 1);
+                cur[numQueens][c] = '.';
             }
         }
     }
 
-    void initCur(int n) {
-        string s;
-        for (int i=0; i<n; ++i) {
-            s += '.';
-        }
-        cur.assign(n, s);
-    }
-
     vector<vector<string>> solveNQueens(int n) {
-        initCur(n);
+        string row;
+        for (int i=0; i<n; ++i) {
+            row += '.';
+        }
+        cur.assign(n, row);
         search(n, 0);
+
         return answer;
     }
 };
