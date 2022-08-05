@@ -7,7 +7,7 @@ using namespace std;
 class Solution {
 public:
     bool avail(vector<vector<int>>& matrix, int m, int n, int r, int c) {
-        return  r >= 0 && r < m && c >= 0 && c < n && matrix[r][c] != -101;
+        return r >= 0 && r < m && c >= 0 && c < n && matrix[r][c] != -101;
     }
 
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
@@ -17,12 +17,14 @@ public:
 
         vector<int> answer;
         int row = 0, col = 0, d = 0;
-        while(answer.size() < m * n) {
+        while (answer.size() < m * n) {
             answer.push_back(matrix[row][col]);
             matrix[row][col] = -101;
+
             if (!avail(matrix, m, n, row + rowDirs[d], col + colDirs[d])) {
-                d = (d + 1) % 4;
+                d = (d+1) % 4;
             }
+
             row += rowDirs[d];
             col += colDirs[d];
         }
