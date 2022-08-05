@@ -10,10 +10,9 @@ public:
     double cal(double x, int cur) {
         if (dp.find(cur) != dp.end()) return dp[cur];
 
-        double val = cal(x, cur/2) * cal(x, cur-cur/2);
-        dp[cur] = val;
+        double res = cal(x, cur/2) * cal(x, cur-cur/2);
 
-        return val;
+        return dp[cur] = res;
     }
 
     double myPow(double x, int n) {
@@ -58,6 +57,7 @@ public:
         if (n == -1) return 1.0/x;
         if (x == 0.0) return x;
 
+        // long type is 8bytes if the gcc compiler runs under a 64-bit environment.
         long nn = n;
         if (nn < 0) nn = -1 * nn;
 
