@@ -21,7 +21,6 @@ public:
 
         for (int i=1; i<n; ++i) {
             if (end >= intervals[i][0]) {
-                start = min(start, intervals[i][0]);
                 end = max(end, intervals[i][1]);
             } else {
                 answer.push_back(vector<int> {start, end});
