@@ -6,10 +6,11 @@ using namespace std;
 class Solution {
 public:
     vector<int> plusOne(vector<int>& digits) {
+        int n = digits.size();
         int extra = 0;
-        for (int i=digits.size()-1; i>=0; --i) {
+        for (int i=n-1; i>=0; --i) {
             int newDigit = digits[i] + extra;
-            if (i == digits.size()-1) {
+            if (i == n-1) {
                 newDigit += 1;
             }
 
