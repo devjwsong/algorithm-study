@@ -26,21 +26,18 @@ public:
 class Solution2 {
 public:
     int mySqrt(int x) {
-        int answer = 0;
-        int low = 0, high = x;
-        while(low <= high) {
-            long long mid = low + (high - low) / 2;
-            if (mid * mid == x) {
-                return mid;
-            } else if (mid * mid < x) {
-                answer = mid;
-                low = mid + 1;
+        long long low = 0, high = x;
+        while (low + 1 < high) {
+            long long mid = (low + high) / 2;
+            if (mid * mid > x) {
+                high = mid;
             } else {
-                high = mid - 1;
+                low = mid;
             }
         }
 
-        return answer;
+        if (high * high <= x) return high;
+        return low;
     }
 };
 
