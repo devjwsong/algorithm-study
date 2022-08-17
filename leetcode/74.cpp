@@ -11,32 +11,27 @@ public:
 
         int row = -1;
         for (int r=0; r<m; ++r) {
-            if (target >= matrix[r][0] && target <= matrix[r][n-1]) {
+            if (matrix[r][0] <= target && target <= matrix[r][n-1]) {
                 row = r;
                 break;
             }
         }
 
-        if (row == -1) {
-            return false;
-        }
+        if (row == -1) return false;
 
-        // Binary search
-        int left = 0, right = n;
-        while(left + 1 < right) {
+        // Binary search.
+        int left = 0, right = n-1;
+        while (left + 1 < right) {
             int mid = (left + right) / 2;
-            if (matrix[row][mid] == target) {
-                return true;
-            }
-
-            if (target > matrix[row][mid]) {
-                left = mid;
-            } else {
+            if (matrix[row][mid] == target) return true;
+            if (matrix[row][mid] > target) {
                 right = mid;
+            } else {
+                left = mid;
             }
         }
-        
-        if (matrix[row][left] == target) return true;
+
+        if (matrix[row][right] == target || matrix[row][left] == target) return true;
         return false;
     }
 };
