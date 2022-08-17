@@ -4,11 +4,15 @@
 
 using namespace std;
 
-// Dutch National Flag algorithm.
+/* 
+Dutch National Flag algorithm. 
+https://medium.com%2F@medium.com/@shreevatsan/what-is-dutch-national-flag-problem-and-how-is-it-related-to-sorting-e75318fcfefe
+*/
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
-        int left = 0, right = nums.size()-1;
+        int n = nums.size();
+        int left = 0, right = n-1;
         int mid = 0;
         while (mid <= right) {
             if (nums[mid] == 0) {
