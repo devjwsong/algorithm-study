@@ -13,45 +13,45 @@ Therefore, the end pointer will proceed anyway through the next iteration.
 class Solution {
 public:
     string minWindow(string s, string t) {
-        int n = s.size(), m = t.size();
-        if (n < m) return "";
+        int m = s.size(), n = t.size();
+        if (m < n) return "";
 
-        unordered_map<char, int> char2num;
-        for (int i=0; i<m; ++i) {
-            ++char2num[t[i]];
+        unordered_map<char, int> mp;
+        for (int i=0; i<n; ++i) {
+            ++mp[t[i]];
         }
 
         int start = 0, end = 0;
-        int pos = -1, curLen = n+1;
-        int count = m;
-        while (end < n) {
-            if (char2num.find(s[end]) != char2num.end()) {
-                if (char2num[s[end]] > 0) {
+        int pos = -1, len = m+1;
+        int count = n;
+        while (end < m) {
+            if (mp.find(s[end]) != mp.end()) {
+                if (mp[s[end]] > 0) {
                     --count;
                 }
-                --char2num[s[end]];
+                --mp[s[end]];
             }
 
             while (count == 0) {
-                if (curLen > end-start+1) {
+                if (len > end - start + 1) {
                     pos = start;
-                    curLen = end-start+1;
+                    len = end - start + 1;
                 }
-                if (char2num.find(s[start]) != char2num.end()) {
-                    ++char2num[s[start]];
-                    if (char2num[s[start]] > 0) {
+                if (mp.find(s[start]) != mp.end()) {
+                    ++mp[s[start]];
+                    if (mp[s[start]] > 0) {
                         ++count;
                     }
                 }
                 ++start;
             }
+
             ++end;
         }
 
-        if (pos == -1 || curLen == n+1) {
-            return "";
-        }
-        return s.substr(pos, curLen);
+        if (pos == -1 || len == m+1) return "";
+
+        return s.substr(pos, len);
     }
 };
 
