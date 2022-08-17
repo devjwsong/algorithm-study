@@ -45,12 +45,12 @@ public:
 
 
 /*
-Space optimized verstion.
+Space optimized version.
 Time: O(m*n)
 Space: O(n)
 This version's insight is that we don't need the whole table, since most of previous values are not used.
 We just need the previous states and the current states.
-Therefore, cur[j] menas the minimum number of steps for converting word1[:i] into word2[:j], and prev[j] is that of converting word1[:i-1] into words[:j].
+Therefore, cur[j] means the minimum number of steps for converting word1[:i] into word2[:j], and prev[j] is that of converting word1[:i-1] into words[:j].
 Then, in the outer loop, we initialize cur[0] = i, since word1[:i] should be converted into an empty string.
 The rest of updates are the same and finally prev should be updated into cur to save the current states for the next loop.
 */
