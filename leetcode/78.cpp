@@ -7,24 +7,23 @@ using namespace std;
 class Solution1 {
 public:
     vector<vector<int>> answer;
+    vector<int> cur;
 
-    void search(vector<int>& nums, vector<int> cur, int curIdx) {
-        if (curIdx == (nums.size()-1)) {
+    void search(vector<int>& nums, int idx) {
+        int n = nums.size();
+        if (idx == n) {
             answer.push_back(cur);
-        } else {
-            search(nums, cur, curIdx+1);
-            vector<int> next = cur;
-            next.push_back(nums[curIdx+1]);
-            search(nums, next, curIdx+1);
+            return;
         }
+        
+        search(nums, idx+1);
+        cur.push_back(nums[idx]);
+        search(nums, idx+1);
+        cur.pop_back();
     }
 
     vector<vector<int>> subsets(vector<int>& nums) {
-        answer.push_back(vector<int> {});
-        for (int i=0; i<nums.size(); ++i) {
-            vector<int> start {nums[i]};
-            search(nums, start, i);
-        }
+        search(nums, 0);
 
         return answer;
     }
@@ -38,11 +37,11 @@ public:
         int n = nums.size();
         vector<vector<int>> answer;
 
-        for (int i=0; i<(1 << n); ++i) {
+        for (int b=0; b<(1 << n); ++b) {
             vector<int> subset;
-            for (int b=0; b<n; ++b) {
-                if (i & (1 << b)) {
-                    subset.push_back(nums[b]);
+            for (int i=0; i<n; ++i) {
+                if (b & (1 << i)) {
+                    subset.push_back(nums[i]);
                 }
             }
             answer.push_back(subset);
