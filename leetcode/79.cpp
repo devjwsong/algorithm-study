@@ -10,26 +10,27 @@ public:
     int rowDirs[4] = {-1, 1, 0, 0};
     int colDirs[4] = {0, 0, -1, 1};
 
-    bool search(vector<vector<char>>& board, string word, int idx, int row, int col) {
-        char letter = word[idx];
-        if (board[row][col] == letter && !used[row][col]) {
-            if (idx == (word.size()-1)) {
-                return true;
-            } else {
-                used[row][col] = true;
-                bool res = false;
-                for (int d=0; d<4; ++d) {
-                    int nextRow = row + rowDirs[d], nextCol = col + colDirs[d];
-                    if (nextRow >= 0 && nextRow < board.size() && nextCol >= 0 && nextCol < board[0].size()) {
-                        res = res || search(board, word, idx+1, nextRow, nextCol);
-                    }
-                }
-                used[row][col] = false;
-                return res;
-            }
-        } else {
+    bool search(vector<vector<char>>& board, string& word, int idx, int row, int col) {
+        char letter = board[row][col];
+        int n = word.size();
+
+        if (word[idx] != letter || used[row][col]) {
             return false;
         }
+
+        if (idx == n-1) return true;
+        bool res = false;
+        used[row][col] = true;
+        for (int d=0; d<4; ++d) {
+            int nextRow = row + rowDirs[d];
+            int nextCol = col + colDirs[d];
+            if (nextRow >= 0 && nextRow < board.size() && nextCol >= 0 && nextCol < board[0].size()) {
+                res = res || search(board, word, idx+1, nextRow, nextCol);
+            }
+        }
+        used[row][col] = false;
+
+        return res;
     }
 
     bool exist(vector<vector<char>>& board, string word) {
@@ -43,10 +44,7 @@ public:
         for (int r=0; r<m; ++r) {
             for (int c=0; c<n; ++c) {
                 bool found = search(board, word, 0, r, c);
-                used[r][c] = false;
-                if (found) {
-                    return true;
-                }
+                if (found) return true;
             }
         }
         return false;
