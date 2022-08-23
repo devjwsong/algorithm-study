@@ -7,18 +7,13 @@ using namespace std;
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        vector<int> profits (prices.size());
-        profits[0] = 0;
-        int min_value = prices[0];
+        int n = prices.size();
+        int leftMin = prices[0];
 
-        for (int i=1; i<prices.size(); ++i) {
-            min_value = min(min_value, prices[i-1]);
-            profits[i] = prices[i] - min_value;
-        }
-
-        int answer = -10000;
-        for (int i=0; i<profits.size(); ++i) {
-            answer = max(answer, profits[i]);
+        int answer = 0;
+        for (int i=1; i<n; ++i) {
+            leftMin = min(leftMin, prices[i-1]);
+            answer = max(answer, prices[i] - leftMin);
         }
 
         return answer;
