@@ -23,32 +23,32 @@ public:
             st.insert(wordList[i]);
         }
         if (st.find(endWord) == st.end()) return 0;
-        
+
         int answer = 0;
         queue<string> q;
         q.push(beginWord);
-        while(!q.empty()) {
+        while (!q.empty()) {
             ++answer;
             int qLen = q.size();
-            
+
             for (int i=0; i<qLen; ++i) {
                 string cur = q.front();
                 q.pop();
-                
+
                 for (int j=0; j<cur.size(); ++j) {
-                    char temp = cur[j];
-                    for (char c='a'; c<='z'; ++c) {
+                    char origin = cur[j];
+                    for (int c='a'; c<='z'; ++c) {
                         cur[j] = c;
                         if (cur == endWord) return answer+1;
                         if (st.find(cur) == st.end()) continue;
                         st.erase(cur);
                         q.push(cur);
                     }
-                    cur[j] = temp;
+                    cur[j] = origin;
                 }
             }
         }
-        
+
         return 0;
     }
 };
