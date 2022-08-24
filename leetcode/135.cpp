@@ -19,24 +19,23 @@ public:
         int n = ratings.size();
         if (n == 1) return 1;
 
-        vector<int> numCandies (n, 1);
+        vector<int> candies (n, 1);
         for (int i=1; i<n; ++i) {
-            if (ratings[i] > ratings[i-1]) {
-                numCandies[i] = numCandies[i-1] + 1;
+            if (ratings[i-1] < ratings[i]) {
+                candies[i] = candies[i-1] + 1;
             }
-        }
-        int answer = numCandies[n-1];
-        for (int i=n-2; i>=0; --i) {
-            if (ratings[i] > ratings[i+1] && numCandies[i] <= numCandies[i+1]) {
-                numCandies[i] = numCandies[i+1] + 1;
-            }
-            answer += numCandies[i];
         }
 
-        for (int i=0; i<n; ++i) {
-            cout<<numCandies[i]<<" ";
+        for (int i=n-2; i>=0; --i) {
+            if (ratings[i+1] < ratings[i]) {
+                candies[i] = max(candies[i], candies[i+1] + 1);
+            }
         }
-        cout<<endl;
+
+        int answer = 0;
+        for (int i=0; i<n; ++i) {
+            answer += candies[i];
+        }
 
         return answer;
     }
