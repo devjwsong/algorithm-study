@@ -15,6 +15,12 @@ And by DFS(Backtracking), find all shortest paths.
 Most submissions in Leetcode are subject to TLE, but this solution has passed.
 I think the difference is BFS, which reduces the number of loops as much as possible.
 However, the main ideas are similar, so the test cases might be too rough...
+One more thing! Why should we start from endWord, not from beginWord?
+Because dfs from beginWord wastes additional time to search for others which are not related to endword.
+We cannot gurantee that all paths are connected to endWord, which means that they might be dead-ends.
+Therefore, even if we make the same graph, dfs part can be optimized by starting from endWord,
+since all words are connected to beginWord but we can exclude unrelated paths.
+The detailed explanation is in https://leetcode.com/problems/word-ladder-ii/discuss/2424935/Analyze-why-we-should-DFS-from-endWord-to-avoid-TLE.
 */
 class Solution {
 public:
@@ -55,13 +61,13 @@ public:
                 vector<string> children = getChildren(cur);
                 for (int i=0; i<children.size(); ++i) {
                     string child = children[i];
-                    if (dict[child] == 0) {
+                    if (dict[child] == 0) {  // First encounter means that this is the shortest path to the word.
                         q.push(child);
                         ++dict[child];
                         level[child] = level[cur] + 1;
                         graph[child].push_back(cur);
                     } else {
-                        if (level[child] == level[cur] + 1) {
+                        if (level[child] == level[cur] + 1) {  // Another path might be possible.
                             graph[child].push_back(cur);
                         }
                     }
