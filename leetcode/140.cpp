@@ -8,40 +8,31 @@ using namespace std;
 class Solution {
 public:
     unordered_set<string> dict;
-    vector<bool> dp;
     vector<string> answer;
     
     void search(string& s, int idx, string cur) {
-        if (idx >= s.size()) {
+        int n = s.size();
+        if (idx >= n) {
+            cur = cur.substr(1);
             answer.push_back(cur);
             return;
         }
         
-        bool poss = false;
-        for (int i=idx; i<s.size(); ++i) {
+        for (int i=idx; i<n; ++i) {
             string temp = s.substr(idx, i-idx+1);
             string next = cur;
             if (dict.find(temp) != dict.end()) {
-                if (cur.size() == 0) {
-                    next = temp;
-                } else {
-                    next += " ";
-                    next += temp;
-                }
-                poss = true;
-                if (i+1 < s.size() && !dp[i+1]) continue;
+                next += " ";
+                next += temp;
                 search(s, i+1, next);
             }
         }
-        
-        if (!poss) dp[idx] = false;
     }
     
     vector<string> wordBreak(string s, vector<string>& wordDict) {
         for (int i=0; i<wordDict.size(); ++i) {
             dict.insert(wordDict[i]);
         }
-        dp.assign(s.size(), true);
         
         string cur;
         search(s, 0, cur);
