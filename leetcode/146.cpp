@@ -12,9 +12,9 @@ public:
         Node* prev;
         Node* next;
 
-        Node (int key, int value) {
-            this->key = key;
-            this->value = value;
+        Node (int _key, int _value) {
+            key = _key;
+            value = _value;
             prev = nullptr;
             next = nullptr;
         }
@@ -25,78 +25,64 @@ public:
     Node* head;
     Node* tail;
 
-    LRUCache(int capacity) {
-        this->capacity = capacity;
+    LRUCache(int _capacity) {
+        capacity = _capacity;
         head = nullptr;
         tail = nullptr;
     }
 
-    void moveBack(Node* cur) {
-        if (cur->next == nullptr) return;
-
-        Node* prev = cur->prev;
-        Node* next = cur->next;
-        if (prev == nullptr) { // Head.
-            next->prev = nullptr;
-            head = next;
-        } else {
-            prev->next = next;
-            next->prev = prev;
-        }
-
-        tail->next = cur;
-        cur->prev = tail;
-        cur->next = nullptr;
-        tail = cur;
-    }
-
-    void addNode(Node* cur) {
-        if (head == nullptr || tail == nullptr) {
-            head = cur;
-            tail = cur;
-        } else {
-            tail->next = cur;
-            cur->prev = tail;
-            tail = cur;
+    void moveBack(Node* node) {
+        if (node != tail) {
+            if (node == head) {
+                head = head->next;
+                head->prev = nullptr;
+                node->next = nullptr;
+            } else {
+                node->prev->next = node->next;
+                node->next->prev = node->prev;
+            }
+            
+            tail->next = node;
+            node->prev = tail;
+            tail = node;
         }
     }
     
     int get(int key) {
         if (key2Node.find(key) == key2Node.end()) return -1;
 
-        Node* cur = key2Node[key];
-        int value = cur->value;
+        Node* node = key2Node[key];
+        int value = node->value;
 
-        moveBack(cur);
+        moveBack(node);
 
         return value;
     }
     
     void put(int key, int value) {
-        if (key2Node.find(key) != key2Node.end()) {  // If the key already exists.
-            Node* cur = key2Node[key];
-            cur->value = value;
-            moveBack(cur);
+        if (key2Node.find(key) != key2Node.end()) {
+            key2Node[key]->value = value;
+            moveBack(key2Node[key]);
+            return;
+        }
+        
+        if (key2Node.size() == capacity) {
+            key2Node.erase(head->key);
+            Node* nextHead = head->next;
+            head->next = nullptr;
+            if (nextHead) nextHead->prev = nullptr;
+            head = nextHead;
+        }
+
+        Node* node = new Node(key, value);
+        key2Node[key] = node;
+        if (!head) {
+            head = node;
+            tail = node;
         } else {
-            if (key2Node.size() == capacity) {  // The cache is full.                
-                int headKey = head->key;
-                Node *newHead = head->next;
-                if (newHead == nullptr) {
-                    head = nullptr;
-                    tail = nullptr;
-                } else {
-                    head->next = nullptr;
-                    newHead->prev = nullptr;
-                    head = newHead;
-                }
-
-                delete key2Node[headKey];
-                key2Node.erase(headKey);
-            }
-
-            Node* node = new Node(key, value);
-            key2Node[key] = node;
-            addNode(node);
+            tail->next = node;
+            node->prev = tail;
+            tail = node;
         }
     }
 };
