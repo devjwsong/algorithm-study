@@ -7,21 +7,22 @@ using namespace std;
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        vector<bool> dp (s.size(), false);
+        int n = s.size();
 
+        vector<bool> dp (n, false);
         int start = 0;
-        while(start < s.size()) {
+        while (start < n) {
             for (int i=0; i<wordDict.size(); ++i) {
-                int wordLen = wordDict[i].size();
-                if (s.substr(start, wordLen) == wordDict[i]) {
-                    dp[start+wordLen-1] = true;
+                int len = wordDict[i].size();
+                if (s.substr(start, len) == wordDict[i]) {
+                    if (start + len - 1 < n) dp[start+len-1] = true;
                 }
             }
 
             bool isFound = false;
-            for (int i=start; i<s.size(); ++i) {
+            for (int i=start; i<n; ++i) {
                 if (dp[i]) {
-                    start = i+1;
+                    start = i + 1;
                     isFound = true;
                     break;
                 }
@@ -30,7 +31,7 @@ public:
             if (!isFound) break;
         }
 
-        return dp[s.size()-1];
+        return dp[n-1];
     }
 };
 
