@@ -12,23 +12,20 @@ public:
     vector<bool> canTake;
     vector<bool> visited;
 
-    bool search(int cur) {
-        if (canTake[cur]) return true;
-        if (visited[cur]) return false;
-
+    void search(int cur) {
+        if (visited[cur]) return;
         visited[cur] = true;
-        bool pass = true;
-        for (int j=0; j<graph[cur].size(); ++j) {
-            int next = graph[cur][j];
-            pass = pass && search(next);
+
+        bool preFinished = true;
+        for (int i=0; i<graph[cur].size(); ++i) {
+            search(graph[cur][i]);
+            if (!canTake[graph[cur][i]]) {
+                preFinished = false;
+            }
         }
 
-        visited[cur] = false;
-        if (pass) {
+        if (preFinished) {
             canTake[cur] = true;
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -38,17 +35,18 @@ public:
         visited.assign(numCourses, false);
         for (int i=0; i<prerequisites.size(); ++i) {
             int first = prerequisites[i][0], second = prerequisites[i][1];
-            graph[second].push_back(first);
-
-            canTake[second] = false;
+            graph[first].push_back(second);
+            canTake[first] = false;
         }
 
-        bool answer = true;
         for (int i=0; i<numCourses; ++i) {
-            answer = answer && search(i);
+            search(i);
         }
 
-        return answer;
+        for (int i=0; i<numCourses; ++i) {
+            if (!canTake[i]) return false;
+        }
+        return true;
     }
 };
 
