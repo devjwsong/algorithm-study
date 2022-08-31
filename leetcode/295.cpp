@@ -26,6 +26,10 @@ public:
                 maxHeap.push(num);
             }
         } else {
+            /*
+            Be careful not to make the size of each heap is bigger than other by more than 1!
+            That's why the second and third if statement are not exactly the same.
+            */
             if (maxHeap.size() == minHeap.size()) {
                 if (minHeap.top() <= num) {
                     minHeap.push(num);
