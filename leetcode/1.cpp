@@ -2,10 +2,12 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
 
+// Time: O(n^2)
 class Solution1 {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -25,6 +27,8 @@ public:
     }
 };
 
+
+// Time: O(nlogn)
 class Solution2 {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -56,39 +60,59 @@ public:
     }
 };
 
+
+// Time: O(n)
+class Solution3 {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> mp;
+        int n = nums.size();
+        
+        for (int i=0; i<n; ++i) {
+            int first = nums[i];
+            int second = target - first;
+            if (mp.find(second) != mp.end()) {
+                return {i, mp[second]};
+            }
+            mp[first] = i;
+        }
+        
+        return {-1, -1};
+    }
+};
+
+
 int main() {
 
+    int n;
+    scanf("%d", &n);
+
     vector<int> nums;
-    int target = 0;
-
-    string input;
-    getline(cin, input);
-    string cur = "";
-    for (int i=0; i<input.size(); ++i) {
-        if (input[i] == ' ') {
-            nums.push_back(stoi(cur));
-            cur = "";
-        } else {
-            cur += input[i];
-        }
-    }
-    if (cur.size() > 0) {
-        nums.push_back(stoi(cur));
+    for (int i=0; i<n; ++i) {
+        int val;
+        scanf("%d", &val);
+        nums.push_back(val);
     }
 
+    int target;
     scanf("%d", &target);
 
-    Solution1 sol1;
-    vector<int> results = sol1.twoSum(nums, target);
-
+    Solution1* sol1 = new Solution1();
+    vector<int> results = sol1->twoSum(nums, target);
     for (int i=0; i<results.size(); ++i) {
         printf("%d ", results[i]);
     }
     printf("\n");
 
-    Solution2 sol2;
-    results = sol2.twoSum(nums, target);
+    Solution2* sol2 = new Solution2();
+    results = sol2->twoSum(nums, target);
+    for (int i=0; i<results.size(); ++i) {
+        printf("%d ", results[i]);
+    }
+    printf("\n");
 
+    Solution3* sol3 = new Solution3();
+    results = sol3->twoSum(nums, target);
     for (int i=0; i<results.size(); ++i) {
         printf("%d ", results[i]);
     }
