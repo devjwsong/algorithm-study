@@ -6,43 +6,37 @@ using namespace std;
 
 class Solution {
 public:
-    int moveRow[4] = {-1, 1, 0, 0};
-    int moveCol[4] = {0, 0, -1, 1};
-
     int answer = 0;
-    vector<vector<int>> tags;
-
-    bool isValid(int r, int c, int m, int n) {
-        return (r >= 0 && r < m && c >= 0 && c < n);
-    }
-
-    void search(vector<vector<char>>& grid, int r, int c, int tag) {
+    int rowDirs[4] = {-1, 1, 0, 0};
+    int colDirs[4] = {0, 0, -1, 1};
+    
+    void search(vector<vector<char>>& grid, int r, int c) {
         int m = grid.size(), n = grid[0].size();
-        
-        tags[r][c] = tag;
+        grid[r][c] = '0';
         for (int d=0; d<4; ++d) {
-            int nextR = r + moveRow[d];
-            int nextC = c + moveCol[d];
-
-            if (isValid(nextR, nextC, m, n) && grid[nextR][nextC] == '1' && tags[nextR][nextC] != tag) {
-                search(grid, nextR, nextC, tag);
-            }
-        }
-    }
-
-    int numIslands(vector<vector<char>>& grid) {
-        int m = grid.size(), n = grid[0].size();
-        tags.assign(m, vector<int> (n, 0));
-        
-        for (int r=0; r<m; ++r) {
-            for (int c=0; c<n; ++c) {
-                if (tags[r][c] == 0 && grid[r][c] == '1') {
-                    ++answer;
-                    search(grid, r, c, answer);
+            int nextR = r + rowDirs[d];
+            int nextC = c + colDirs[d];
+            
+            if (nextR >= 0 && nextR < m && nextC >= 0 && nextC < n) {
+                if (grid[nextR][nextC] == '1') {
+                    search(grid, nextR, nextC);
                 }
             }
         }
-
+    }
+    
+    int numIslands(vector<vector<char>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        
+        for (int r=0; r<m; ++r) {
+            for (int c=0; c<n; ++c) {
+                if (grid[r][c] == '1') {
+                    ++answer;
+                    search(grid, r, c);
+                }
+            }
+        }
+        
         return answer;
     }
 };
