@@ -7,14 +7,17 @@ using namespace std;
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int left = 0, right = nums.size()-1;
+        int n = nums.size();
+        int left = 0, right = n-1;
         while (left + 1 < right) {
             int mid = (left + right) / 2;
+            if (nums[mid] == target) return mid;
+            
             if (nums[mid] > target) {
                 if (target > nums[left]) {
                     right = mid;
                 } else if (target < nums[left]) {
-                    if (nums[mid] > nums[right]) {
+                    if (nums[mid] > nums[left]) {
                         left = mid;
                     } else {
                         right = mid;
@@ -22,25 +25,23 @@ public:
                 } else {
                     return left;
                 }
-            } else if (nums[mid] < target) {
-                if (nums[mid] > nums[left]) {
+            } else {
+                if (target < nums[right]) {
                     left = mid;
-                } else {
-                    if (target > nums[right]) {
-                        right = mid;
-                    } else if (target < nums[right]) {
+                } else if (target > nums[right]) {
+                    if (nums[mid] > nums[left]) {
                         left = mid;
                     } else {
-                        return right;
+                        right = mid;
                     }
+                } else {
+                    return right;
                 }
-            } else {
-                return mid;
             }
-        }   
-
-        if (nums[left] == target) return left;
+        }
+    
         if (nums[right] == target) return right;
+        if (nums[left] == target) return left;
         return -1;
     }
 };
