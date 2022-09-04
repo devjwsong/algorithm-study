@@ -14,44 +14,44 @@ struct ListNode {
 
 class Solution {
 public:
-    ListNode* mergeNodes(ListNode* node1, ListNode* node2, int extra) {
+    ListNode* mergeNodes(ListNode* cur1, ListNode* cur2, int extra) {
         ListNode* node = new ListNode();
-
-        if (node1 == nullptr && node2 == nullptr) {
-            if (extra == 0) {
-                return nullptr;
+        if (!cur1 && !cur2) {
+            if (extra > 0) {
+                node->val = extra;
             } else {
-                node->val += extra;
-                return node;
+                node = nullptr;
             }
+            
+            return node;
         }
-
-        if (node1 != nullptr) {
-            node->val += node1->val;
+        
+        if (cur1) {
+            node->val += cur1->val;
         }
-        if (node2 != nullptr) {
-            node->val += node2->val;
+        if (cur2) {
+            node->val += cur2->val;
         }
         node->val += extra;
-
+        
         if (node->val >= 10) {
             extra = node->val / 10;
             node->val %= 10;
         } else {
             extra = 0;
         }
-
-        if (node1 != nullptr && node2 != nullptr) {
-            node->next = mergeNodes(node1->next, node2->next, extra);
-        } else if (node1 != nullptr) {
-            node->next = mergeNodes(node1->next, nullptr, extra);
-        } else if (node2 != nullptr) {
-            node->next = mergeNodes(node2->next, nullptr, extra);
+        
+        if (cur1 && cur2) {
+            node->next = mergeNodes(cur1->next, cur2->next, extra);
+        } else if (cur1 && !cur2) {
+            node->next = mergeNodes(cur1->next, nullptr, extra);
+        } else if (!cur1 && cur2) {
+            node->next = mergeNodes(nullptr, cur2->next, extra);
         }
-
+        
         return node;
     }
-
+    
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         return mergeNodes(l1, l2, 0);
     }
