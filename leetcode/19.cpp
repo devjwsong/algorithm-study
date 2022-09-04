@@ -89,7 +89,7 @@ Two-pass + two pointers solution (which is more intuitive...)
 Time: O(n)
 Space: O(1)
 */
-class Solution {
+class Solution3 {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
         int size = 0;
@@ -112,6 +112,41 @@ public:
                 prev = cur;
                 cur = cur->next;
             }
+        }
+        
+        return head;
+    }
+};
+
+
+/*
+Real one pass + two pointers solution (upgraded from the Solution2)
+Time: O(n)
+Space: O(1)
+Basically, the idea is that the number of edges between slow and fast should be kept as n.
+So, moving fast first and if the distance between them becomes enouth, then move slow.
+Then slow is located right before the node which should be eliminated.
+If n == size, then slow does not move and it stays at the head.
+*/
+class Solution4 {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        int count = 0;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        
+        while (fast->next) {
+            ++count;
+            fast = fast->next;
+            if (count > n) {
+                slow = slow->next;
+            }
+        }
+        
+        if (count < n) {
+            return head->next;
+        } else {
+            slow->next = slow->next->next;
         }
         
         return head;
