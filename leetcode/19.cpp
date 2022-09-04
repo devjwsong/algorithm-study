@@ -52,7 +52,7 @@ If m == n, then m-n=0(fast == NULL), so we should eliminate the head.
 If m > n, then fast is not NULL.
 Next, move slow and fast until fast reaches the final node.
 Since the number of nodes between slow and fast is (n-1),
-if fast is the 1st from the bask, then slow is n+1.
+if fast is the 1st from the back, then slow is n+1.
 So we should eliminate the next node of slow.
 If n == 1, then the next node is fast(which is final node), so slow->next = NULL is enough.
 If n > 2, slow->next = slow->next->next is acceptable since at least one node is between slow and the final node. 
@@ -79,6 +79,41 @@ public:
             slow->next = slow->next->next;
         }
 
+        return head;
+    }
+};
+
+
+/*
+Two-pass + two pointers solution (which is more intuitive...)
+Time: O(n)
+Space: O(1)
+*/
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        int size = 0;
+        ListNode* cur = head;
+        while (cur) {
+            ++size;
+            cur = cur->next;
+        }
+        if (n == size) return head->next;
+        
+        cur = head;
+        ListNode* prev = nullptr;
+        int count = 0;
+        while (cur) {
+            ++count;
+            if (count == (size+1-n)) {
+                prev->next = cur->next;
+                cur = cur->next;
+            } else {
+                prev = cur;
+                cur = cur->next;
+            }
+        }
+        
         return head;
     }
 };

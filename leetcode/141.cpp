@@ -13,6 +13,7 @@ struct ListNode {
 };
 
 
+// Space: O(n).
 class Solution1 {
 public:
     bool hasCycle(ListNode *head) {
@@ -32,21 +33,28 @@ public:
     }
 };
 
+
+/*
+Floyd's Tortoise & Hare algorithm.
+Space: O(1).
+The prove is well explained in https://fierycoding.tistory.com/45.
+Also, after the tortoise and hare meets, the first point where they meet again 
+after sending the tortoise to the head and making the hare move one step at a time
+becomes the starting point of the cycle.
+*/
 class Solution2 {
 public:
     bool hasCycle(ListNode *head) {
-        ListNode* rabbit = head;
-        ListNode* turtle = head;
-
-        while (rabbit != nullptr && rabbit->next != nullptr) {
-            turtle = turtle->next;
-            rabbit = rabbit->next->next;
-
-            if (rabbit == turtle) {
-                return true;
-            }
+        ListNode* tortoise = head;
+        ListNode* hare = head;
+        
+        while (hare && hare->next) {
+            tortoise = tortoise->next;
+            hare = hare->next->next;
+            
+            if (tortoise == hare) return true;
         }
-
+        
         return false;
     }
 };
