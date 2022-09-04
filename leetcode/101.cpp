@@ -16,37 +16,25 @@ struct TreeNode {
 };
 
 
+// Recursively
 class Solution1 {
 public:
-    bool isMirror(TreeNode* node1, TreeNode* node2) {
-        if (node1 == nullptr && node2 == nullptr) {
-            return true;
-        }
-
-        if (node1 != nullptr && node2 == nullptr) {
-            return false;
-        }
-
-        if (node1 == nullptr && node2 != nullptr) {
-            return false;
-        }
-
-        if (node1->val != node2->val) {
-            return false;
-        }
-
-        bool result1 = isMirror(node1->left, node2->right);
-        bool result2 = isMirror(node1->right, node2->left);
-
-        return result1 && result2;
+    bool isMirror(TreeNode* left, TreeNode* right) {
+        if (!left && !right) return true;
+        if (left && !right) return false;
+        if (!left && right) return false;
+        if (left->val != right->val) return false;
+        
+        return isMirror(left->left, right->right) && isMirror(left->right, right->left);
     }
-
+    
     bool isSymmetric(TreeNode* root) {
         return isMirror(root, root);
     }
 };
 
 
+// Iteratively
 class Solution2 {
 public:
     bool isSymmetric(TreeNode* root) {
