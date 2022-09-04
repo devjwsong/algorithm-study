@@ -14,22 +14,29 @@ struct TreeNode {
 
 class Solution {
 public:
-    int dia = 0;
+    int answer = 0;
+    
+    /*
+    This function always return the diameter which ends with the root.
+    So there is no meaning of considering the other cases.
+    */
+    int getDiameter(TreeNode* root) {
+        if (!root) return 0;
 
-    int getDiameter(TreeNode* node) {
-        if (node == nullptr) {
-            return 0;
-        }
+        // Each result is larger than the original diameter by 1.
+        int leftRes = getDiameter(root->left);
+        int rightRes = getDiameter(root->right);
 
-        int leftDia = getDiameter(node->left);
-        int rightDia = getDiameter(node->right);
+        // Containing only one branch.
+        int temp1 = 1 + max(leftRes, rightRes);
+        /*
+        Containing both + current node.
+        The reason why only 1 is added, not 2, is because we want to keep the answer
+        larger than the original answer only by 1.
+        */ 
+        int temp2 = 1 + leftRes + rightRes;
 
-        // Containing only one branch
-        int temp1 = 1 + max(leftDia, rightDia);
-        // Containing both + current node
-        int temp2 = 1 + leftDia + rightDia;
-
-        dia = max(dia, max(temp1, temp2));
+        answer = max(answer, max(temp1, temp2));
 
         return temp1;
     }
@@ -37,6 +44,6 @@ public:
     int diameterOfBinaryTree(TreeNode* root) {
         getDiameter(root);
 
-        return dia-1;
+        return answer-1;
     }
 };
