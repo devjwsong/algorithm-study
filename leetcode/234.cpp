@@ -37,66 +37,58 @@ public:
 class Solution2 {
 public:
     ListNode* getMid(ListNode* head) {
-        int num = 0;
+        int size = 0;
         ListNode* cur = head;
-        while(cur != nullptr) {
-            ++num;
+        while (cur) {
+            ++size;
             cur = cur->next;
         }
-
-        int mid_idx = -1;
-        if (num % 2 == 0) {
-            mid_idx = num / 2;
+        
+        int idx = 0;
+        if (size % 2 == 0) {
+            idx = size / 2;
         } else {
-            mid_idx = num / 2 + 1;
+            idx = size / 2 + 1;
         }
-
-        int count = 0;
+        
         cur = head;
-        while(cur != nullptr) {
-            if (count == mid_idx) {
-                return cur;
-            }
+        int curIdx = -1;
+        while (cur) {
+            ++curIdx;
+            if (curIdx == idx) break;
             cur = cur->next;
-            count += 1;
         }
-
+        
         return cur;
     }
-
+    
     ListNode* reverseList(ListNode* head) {
         ListNode* cur = head;
-        ListNode* next = head->next;
-        cur->next = nullptr;
-        while(cur != nullptr && next != nullptr) {
-            ListNode* furtherNext = next->next;
+        ListNode* next = cur->next;
+        while (cur && next) {
+            ListNode* nn = next->next;
             next->next = cur;
             cur = next;
-            next = furtherNext;
+            next = nn;
         }
-
+        head->next = nullptr;
+        
         return cur;
     }
-
+    
     bool isPalindrome(ListNode* head) {
-        if (head->next == nullptr) {
-            return true;
-        }
-
+        if (!head->next) return true;
+        
         ListNode* mid = getMid(head);
-        ListNode* reversedHalf = reverseList(mid);
-
-        while(1) {
-            if (head->val != reversedHalf->val) {
-                return false;
-            }
-
-            if (reversedHalf == mid) {
-                break;
-            }
-
-            head = head->next;
-            reversedHalf = reversedHalf->next;
+        ListNode* rightHalf = reverseList(mid);
+        
+        ListNode* left = head;
+        ListNode* right = rightHalf;
+        while (left && right) {
+            if (left->val != right->val) return false;
+            
+            left = left->next;
+            right = right->next;
         }
         
         return true;
