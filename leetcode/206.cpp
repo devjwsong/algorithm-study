@@ -34,6 +34,7 @@ public:
     }
 };
 
+
 // Recursively
 class Solution2 {
 public:
@@ -57,5 +58,26 @@ public:
         }
 
         return iterList(head).second;
+    }
+};
+
+
+// Very very simple
+class Solution3 {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (!head) return nullptr;
+        
+        ListNode* cur = head;
+        ListNode* next = cur->next;
+        while (cur && next) {
+            ListNode* nn = next->next;
+            next->next = cur;
+            cur = next;
+            next = nn;
+        }
+        head->next = nullptr;
+        
+        return cur;
     }
 };
