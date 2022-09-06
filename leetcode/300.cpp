@@ -4,7 +4,7 @@
 using namespace std;
 
 
-// O(n^2)
+// O(n^2) solution.
 class Solution1 {
 public:
     int lengthOfLIS(vector<int>& nums) {
@@ -30,7 +30,11 @@ public:
 };
 
 
-// O(nlogn)
+/*
+O(nlogn) solution.
+The idea is containing as small value as possible.
+Since mem array is sorted, we can use binary search to find the rightful index for new value.
+*/
 class Solution2 {
 public:
     int lengthOfLIS(vector<int>& nums) {
@@ -38,7 +42,7 @@ public:
         vector<int> mem;
 
         for (int i=0; i<n; ++i) {
-            if (mem.size() == 0 || mem[mem.size()-1] < nums[i]) {
+            if (mem.size() == 0 || mem.back() < nums[i]) {
                 mem.push_back(nums[i]);
             } else {
                 int idx = lower_bound(mem.begin(), mem.end(), nums[i]) - mem.begin();
