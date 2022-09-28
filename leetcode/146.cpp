@@ -72,6 +72,7 @@ public:
             head->next = nullptr;
             if (nextHead) nextHead->prev = nullptr;
             head = nextHead;
+            if (!head) tail = nullptr;
         }
 
         Node* node = new Node(key, value);
