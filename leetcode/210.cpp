@@ -6,54 +6,62 @@ using namespace std;
 
 class Solution {
 public:
-    vector<int> answer;
     vector<vector<int>> graph;
+    vector<bool> possible;
     vector<bool> visited;
-    vector<bool> canTake;
+    vector<int> answer;
+    bool isCycle = false;
 
-    void search(int cur) {
-        if (!visited[cur] && canTake[cur]) {
-            visited[cur] = true;
-            answer.push_back(cur);
+    bool search(int course) {
+        if (possible[course]) {
+            return true;
         } else {
-            if (visited[cur]) return;
-            if (!canTake[cur]) {
-                visited[cur] = true;
-                bool isPass = true;
-                for (int j=0; j<graph[cur].size(); ++j) {
-                    int next = graph[cur][j];
-                    search(next);
-
-                    if (!canTake[next]) isPass = false; 
-                }
-
-                if (isPass) {
-                    canTake[cur] = true;
-                    answer.push_back(cur);
-                }
+            if (visited[course]) {
+                isCycle = true;
+                return false;
             }
         }
+        visited[course] = true;
+        if (graph[course].size() == 0) {
+            possible[course] = true;
+            answer.push_back(course);
+            return true;
+        }
+
+        bool res = true;
+        for (int i=0; i<graph[course].size(); ++i) {
+            int pre = graph[course][i];
+            if (!search(pre)) {
+                res = false;
+            }
+        }
+
+        if (res) {
+            possible[course] = true;
+            answer.push_back(course);
+        }
+        return res;
     }
 
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
         graph.assign(numCourses, vector<int> {});
+        possible.assign(numCourses, false);
         visited.assign(numCourses, false);
-        canTake.assign(numCourses, true);
-        for (int i=0; i<prerequisites.size(); ++i) {
-            int first = prerequisites[i][0], second = prerequisites[i][1];
-            graph[first].push_back(second);
 
-            canTake[first] = false;
+        int n = prerequisites.size();
+        for (int i=0; i<n; ++i) {
+            int target = prerequisites[i][0];
+            int pre = prerequisites[i][1];
+            graph[target].push_back(pre);
         }
 
         for (int i=0; i<numCourses; ++i) {
             search(i);
         }
 
-        if (answer.size() < numCourses) return vector<int> {};
-
-        return answer;    
-    }
+        if (isCycle) return {};
+        return answer;
+    }   
 };
 
 
