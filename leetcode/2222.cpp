@@ -3,6 +3,13 @@
 using namespace std;
 
 
+/*
+Very intuitive way!
+num0sAfter: # of 0s after the index i.
+num1sAfter: # of 1s after the index i.
+num0sBefore: # of 0s before the index i.
+num1sBefore: # of 1s before the index i.
+*/
 class Solution {
 public:
     long long numberOfWays(string s) {
