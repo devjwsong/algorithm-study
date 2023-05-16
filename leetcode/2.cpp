@@ -12,7 +12,8 @@ struct ListNode {
 };
 
 
-class Solution {
+// 1. With extra memory.
+class Solution1 {
 public:
     ListNode* mergeNodes(ListNode* cur1, ListNode* cur2, int extra) {
         ListNode* node = new ListNode();
@@ -54,5 +55,46 @@ public:
     
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         return mergeNodes(l1, l2, 0);
+    }
+};
+
+
+// 2. Without extra memory.
+class Solution2 {
+public:
+    ListNode* add(ListNode* l1, ListNode* l2, int extra) {
+        if (!l1 && !l2) {
+            if (extra > 0) {
+                ListNode* newNode = new ListNode(extra);
+                return newNode;
+            }
+            return nullptr;
+        }
+
+        if (!l1) {
+            l2->val += extra;
+            int newExtra = l2->val / 10;
+            l2->val -= (newExtra * 10);
+            l2->next = add(nullptr, l2->next, newExtra);
+            return l2;
+        }
+
+        if (!l2) {
+            l1->val += extra;
+            int newExtra = l1->val / 10;
+            l1->val -= (newExtra * 10);
+            l1->next = add(l1->next, nullptr, newExtra);
+            return l1;
+        }
+
+        l1->val += (l2->val + extra);
+        int newExtra = l1->val / 10;
+        l1->val -= (newExtra * 10);
+        l1->next = add(l1->next, l2->next, newExtra);
+        return l1;
+    }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        return add(l1, l2, 0);
     }
 };
