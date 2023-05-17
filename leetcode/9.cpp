@@ -4,7 +4,7 @@
 
 using namespace std;
 
-
+// 1. Into a string.
 class Solution1 {
 public:
     bool isPalindrome(int x) {
@@ -23,6 +23,7 @@ public:
 };
 
 
+// 2. Without a string, but with a vector.
 class Solution2 {
 public:
     bool isPalindrome(int x) {
@@ -47,6 +48,33 @@ public:
         }
         return true;
     } 
+};
+
+
+// 3. Without a string and without a vector.
+class Solution3 {
+public:
+    bool isPalindrome(int x) {
+        if (x < 0) return false;
+
+        int dec = 1;
+        int cpy = x;
+        while (cpy >= 10) {
+            cpy /= 10;
+            dec *= 10;
+        }
+        
+        while (x > 0) {
+            int digit = x % 10;
+            if (digit != x / dec) return false;
+
+            x -= (digit * dec);
+            x /= 10;
+            dec /= 100;
+        }
+
+        return true;
+    }
 };
 
 
