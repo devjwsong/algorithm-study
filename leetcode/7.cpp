@@ -7,46 +7,35 @@ using namespace std;
 
 class Solution {
 public:
-    bool isValid(string reversed, int pre) {
-        string max = to_string(INT32_MAX);
+    bool isValid(string reversed, int sign) {
+        string maxStr = to_string(INT_MAX);
+        if (reversed.size() < maxStr.size()) return true;
         
-        if (pre == -1) {
-            max = max.substr(0, max.size()-1) + '8';
-        }
+        if (sign == 1 && reversed > maxStr) return false;
+        if (sign == -1 && reversed > (maxStr.substr(0, maxStr.size()-1) + '8')) return false;
 
-        if (reversed.size() < max.size()) {
-            return true;
-        } else if (reversed.size() > max.size()) {
-            return false;
-        }
-
-        return reversed <= max;
+        return true;
     }
 
     int reverse(int x) {
-        int result = 0;
-        int pre = 0;
+        if (x == INT_MIN) return 0;
+
+        int res = 0;
+        int sign = 1;
         if (x < 0) {
-            pre = -1;
-        } else {
-            pre = 1;
+            sign = -1;
+            x *= -1;
         }
 
         string converted = to_string(x);
-        if (pre == -1) {
-            converted = converted.substr(1, converted.size());
-        }
         string reversed = "";
         for (int i=converted.size()-1; i>=0; --i) {
             reversed += converted[i];
         }
+        
+        if (!isValid(reversed, sign)) return 0;
 
-        if (isValid(reversed, pre)) {
-            return pre * stoi(reversed);
-        }
-
-        return 0;
-
+        return sign * stoi(reversed);
     }
 };
 
