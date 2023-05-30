@@ -5,7 +5,8 @@
 using namespace std;
 
 
-class Solution {
+// Using string. (A little bit more time and space, but manageable.)
+class Solution1 {
 public:
     bool isValid(string reversed, int sign) {
         string maxStr = to_string(INT_MAX);
@@ -40,15 +41,29 @@ public:
 };
 
 
-int main() {
+// Only using integers. (A little bit more efficient.)
+class Solution2 {
+public:
+    int reverse(int x) {
+        if (x == INT_MIN) return 0;
 
-    int x = 0;
-    scanf("%d", &x);
+        int sign = 1;
+        if (x < 0) {
+            x *= -1;
+            sign = -1;
+        }
 
-    Solution sol;
-    int result = sol.reverse(x);
+        int res = 0;
+        while (x > 0) {
+            if (res > INT_MAX/10) return 0;
 
-    printf("%d\n", result);
+            int digit = x % 10;
+            if (res == INT_MAX/10 && digit > INT_MAX%10) return 0;
 
-    return 0;
-}
+            res = 10 * res + digit;
+            x /= 10;
+        }
+
+        return sign * res;
+    }
+};
