@@ -41,19 +41,3 @@ public:
         return answer;
     }
 };
-
-
-int main() {
-
-    string s;
-    getline(cin, s);
-
-    int numRows;
-    cin>>numRows;
-
-    Solution* sol = new Solution();
-    string answer = sol->convert(s, numRows);
-    cout<<answer<<"\n";
-
-    return 0;
-}

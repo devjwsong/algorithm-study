@@ -45,16 +45,3 @@ public:
         return sign * answer;
     }
 };
-
-
-int main() {
-
-    string s;
-    getline(cin, s);
-
-    Solution* sol = new Solution();
-    int answer = sol->myAtoi(s);
-    cout<<answer<<"\n";
-
-    return 0;
-}

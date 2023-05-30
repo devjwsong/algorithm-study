@@ -55,17 +55,3 @@ public:
         return search(s, p, 0, 0);
     }
 };
-
-
-int main() {
-
-    string s, p;
-    getline(cin, s);
-    getline(cin, p);
-
-    Solution* sol = new Solution();
-    bool answer = sol->isMatch(s, p);
-    cout<<answer<<"\n";
-
-    return 0;
-}

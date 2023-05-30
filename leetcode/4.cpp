@@ -44,28 +44,3 @@ public:
         return 0.0;
     }
 };
-
-
-int main() {
-
-    int m, n;
-    scanf("%d %d", &m, &n);
-
-    vector<int> nums1, nums2;
-    for (int i=0; i<m; ++i) {
-        int val;
-        scanf(" %d", &val);
-        nums1.push_back(val);
-    }
-    for (int i=0; i<n; ++i) {
-        int val;
-        scanf(" %d", &val);
-        nums2.push_back(val);
-    }
-
-    Solution* sol = new Solution();
-    double answer = sol->findMedianSortedArrays(nums1, nums2);
-    printf("%lf\n", answer);
-
-    return 0;
-}

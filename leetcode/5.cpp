@@ -51,16 +51,3 @@ public:
         return s.substr(start, maxLen);
     }
 };
-
-int main() {
-
-    string s;
-    getline(cin, s);
-
-    Solution *sol = new Solution();
-    string answer = sol->longestPalindrome(s);
-
-    cout<<answer + "\n";
-
-    return 0;
-}

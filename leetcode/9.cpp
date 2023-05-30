@@ -76,20 +76,3 @@ public:
         return true;
     }
 };
-
-
-int main() {
-
-    int x = 0;
-    scanf("%d", &x);
-
-    Solution1 sol1;
-    int result = sol1.isPalindrome(x);
-    printf("%d\n", result);
-
-    Solution2 sol2;
-    result = sol2.isPalindrome(x);
-    printf("%d\n", result);
-
-    return 0;
-}

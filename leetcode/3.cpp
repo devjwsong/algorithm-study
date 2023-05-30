@@ -35,17 +35,3 @@ public:
         return answer;
     }
 };
-
-
-int main() {
-
-    string s;
-    getline(cin, s);
-
-    Solution* sol = new Solution();
-    int answer = sol->lengthOfLongestSubstring(s);
-
-    printf("%d\n", answer);
-
-    return 0;
-}
