@@ -44,29 +44,3 @@ public:
         return answer;
     }
 };
-
-
-int main() {
-
-    int n;
-    scanf("%d", &n);
-
-    vector<int> nums;
-    for (int i=0; i<n; ++i) {
-        int val;
-        scanf(" %d", &val);
-        nums.push_back(val);
-    }
-
-    Solution *sol = new Solution();
-    vector<vector<int>> answer = sol->threeSum(nums);
-
-    for (int i=0; i<answer.size(); ++i) {
-        for (int j=0; j<answer[i].size(); ++j) {
-            printf("%d ", answer[i][j]);
-        }
-        printf("\n");
-    }
-
-    return 0;
-}
