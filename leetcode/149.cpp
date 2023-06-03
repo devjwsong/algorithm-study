@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <climits>
 
 using namespace std;
 
@@ -55,31 +56,28 @@ public:
         int n = points.size();
         int answer = 1;
         for (int i=0; i<n; ++i) {
-            int maxNum = 0;
-            unordered_map<double, int> m2num;
+            vector<int> p1 = points[i];
+            unordered_map<double, int> mp;
 
             for (int j=i+1; j<n; ++j) {
-                double m = 0.0;
-                if (points[i][0] == points[j][0]) {
-                    m = INT32_MAX;
+                vector<int> p2 = points[j];
+
+                if (p2[0] == p1[0]) {
+                    ++mp[INT_MAX];
                 } else {
-                    m = (double) (points[j][1]-points[i][1]) / (double) (points[j][0]-points[i][0]);
+                    double slope = (double) (p2[1] - p1[1]) / (double) (p2[0] - p1[0]);
+                    ++mp[slope];
                 }
-
-                if (m2num.find(m) == m2num.end()) m2num[m] = 1;
-                ++m2num[m];
             }
 
-            for (auto iter=m2num.begin(); iter!=m2num.end(); ++iter) {
-                maxNum = max(maxNum, iter->second);
+            for (unordered_map<double, int>::iterator i=mp.begin(); i != mp.end(); ++i) {
+                answer = max(answer, i->second+1);
             }
-            answer = max(answer, maxNum);
         }
 
         return answer;
     }
 };
-
 
 int main() {
 
