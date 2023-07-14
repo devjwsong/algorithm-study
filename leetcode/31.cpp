@@ -37,27 +37,3 @@ public:
         reverse(nums.begin() + start + 1, nums.end());
     }
 };
-
-
-int main() {
-
-    int n;
-    scanf("%d", &n);
-
-    vector<int> nums;
-    for (int i=0; i<n; ++i) {
-        int val;
-        scanf(" %d", &val);
-        nums.push_back(val);
-    }
-
-    Solution* sol = new Solution();
-    sol->nextPermutation(nums);
-
-    for (int i=0; i<n; ++i) {
-        printf("%d ", nums[i]);
-    }
-    printf("\n");
-
-    return 0;
-}
