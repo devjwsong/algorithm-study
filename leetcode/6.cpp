@@ -3,6 +3,10 @@
 using namespace std;
 
 
+/*
+Let's think about how the intervals change if the row increases by 1.
+If the starting row index increases by 1, the first interval decreases by 2 and the second increases by 2.
+*/
 class Solution {
 public:
     string convert(string s, int numRows) {
