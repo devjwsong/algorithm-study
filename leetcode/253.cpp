@@ -8,6 +8,7 @@ using namespace std;
 
 /*
 Priority Queue.
+The heap contains the earlist end time among the rooms currently held.
 Time: O(nlogn).
 Space: O(n).
 */
@@ -71,27 +72,3 @@ public:
         return answer;
     }
 };
-
-
-int main() {
-
-    int n;
-    scanf("%d", &n);
-
-    vector<vector<int>> intervals;
-    for (int i=0; i<n; ++i) {
-        int a, b;
-        scanf("%d %d", &a, &b);
-        intervals.push_back({a, b});
-    }
-
-    Solution1* sol1 = new Solution1();
-    int answer = sol1->minMeetingRooms(intervals);
-    printf("%d\n", answer);
-
-    Solution2* sol2 = new Solution2();
-    answer = sol2->minMeetingRooms(intervals);
-    printf("%d\n", answer);
-
-    return 0;
-}
