@@ -5,7 +5,16 @@
 
 using namespace std;
 
-// hash
+/*
+Hash table.
+The reason why this runs in O(n) is because eventually while loop is executed only n times.
+In other words, if nums[i] is not the first element of a certain consecutive array,
+it will be ignored.
+On the other hand, if nums[i] is the first element, it will run through the consecutive elements.
+So eventually, the while loop's time complexity is another O(n).
+Time: O(n).
+Space: O(n).
+*/
 class Solution1 {
 public:
     int longestConsecutive(vector<int>& nums) {
@@ -34,78 +43,49 @@ public:
 };
 
 
-// Union-Find
+/*
+Union-Find.
+Union updates the relation between the number k and k+1.
+=> mp[k+1] = k.
+Find find the root of the relation, which is the smallest number among the consecutive sequence.
+Note that mp[k] might not be the smallest value, because compression is not guaranteed to be the "real" root.
+Time: O(n). (roughly... with compression)
+Space: O(n).
+*/
 class Solution2 {
 public:
-    unordered_map<int, int> starts;
-    unordered_map<int, int> seqLens;
+    unordered_map<int, int> mp;
 
-    int Find(int num) {
-        if (starts.find(num) == starts.end()) {
-            starts[num] = num;
-            return num;
-        } else {
-            if (starts[num] == num) return num;
-            starts[num] = Find(starts[num]);
-            return starts[num];
-        }
+    int Find(int target) {
+        if (mp[target] == target) return target;
+        mp[target] = Find(mp[target]);
+        return mp[target];
     }
 
     void Union(int a, int b) {
-        int startA = Find(a);
-        int startB = Find(b);
+        int rootA = Find(a);
+        int rootB = Find(b);
 
-        if (startA == startB) return;
-
-        seqLens[startA] += seqLens[startB];
-        starts[startB] = startA;
-    }
+        mp[rootB] = rootA;
+    } 
 
     int longestConsecutive(vector<int>& nums) {
-        if (nums.size() == 0) return 0;
-        if (nums.size() == 1) return 1;
+        int n = nums.size();
+        for (int i=0; i<n; ++i) {
+            mp[nums[i]] = nums[i];
+        }
 
-        for (int i=0; i<nums.size(); ++i) {
-            if (seqLens.find(nums[i]) != seqLens.end()) continue;
-            
-            seqLens[nums[i]] = 1;
-            if (seqLens.find(nums[i]-1) != seqLens.end()) {
+        for (int i=0; i<n; ++i) {
+            if (mp.find(nums[i]-1) != mp.end()) {
                 Union(nums[i]-1, nums[i]);
-            }
-            if (seqLens.find(nums[i]+1) != seqLens.end()) {
-                Union(nums[i], nums[i]+1);
             }
         }
 
         int answer = 0;
-        for (auto iter = seqLens.begin(); iter != seqLens.end(); ++iter) {
-            answer = max(answer, iter->second);
+        for (unordered_map<int, int>::iterator i=mp.begin(); i!=mp.end(); ++i) {
+            answer = max(answer, i->first - Find(i->first) + 1);
         }
 
         return answer;
     }
 };
-
-
-int main() {
-
-    int n;
-    scanf("%d", &n);
-
-    vector<int> nums;
-    for (int i=0; i<n; ++i) {
-        int val;
-        scanf("%d", &val);
-        nums.push_back(val);
-    }
-
-    Solution1 *sol1 = new Solution1();
-    int answer = sol1->longestConsecutive(nums);
-    printf("%d\n", answer);
-
-    Solution2 *sol2 = new Solution2();
-    answer = sol2->longestConsecutive(nums);
-    printf("%d\n", answer);
-
-    return 0;
-}
