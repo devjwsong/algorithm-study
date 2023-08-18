@@ -4,19 +4,30 @@
 using namespace std;
 
 
+/*
+Bit manipulation.
+If the count can be divided by 3, that means the current bit has been counted 3*k times.
+So thses counts belong to the numbers which appear 3 times.
+If it cannot be, then one bit came from the number which appears only one time.
+So we should keep it.
+Time: O(n).
+Space: O(1).
+*/
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        int n = nums.size();
         int answer = 0;
+        int n = nums.size();
+
         for (int b=0; b<32; ++b) {
-            int sum = 0;
+            int count = 0;
             for (int i=0; i<n; ++i) {
                 if (nums[i] & (1 << b)) {
-                    ++sum;
+                    ++count;
                 }
             }
-            if (sum % 3 != 0) {
+
+            if (count % 3 > 0) {
                 answer |= (1 << b);
             }
         }
@@ -24,23 +35,3 @@ public:
         return answer;
     }
 };
-
-
-int main() {
-
-    int n;
-    scanf("%d", &n);
-
-    vector<int> nums;
-    for (int i=0; i<n; ++i) {
-        int val;
-        scanf(" %d", &val);
-        nums.push_back(val);
-    }
-
-    Solution* sol = new Solution();
-    int answer = sol->singleNumber(nums);
-    printf("%d\n", answer);
-
-    return 0;
-}
