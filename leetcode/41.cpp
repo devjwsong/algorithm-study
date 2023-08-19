@@ -37,22 +37,3 @@ public:
         return n+1;
     }
 };
-
-int main() {
-
-    int n;
-    scanf("%d", &n);
-
-    vector<int> nums;
-    for (int i=0; i<n; ++i) {
-        int val;
-        scanf(" %d", &val);
-        nums.push_back(val);
-    }
-
-    Solution* sol = new Solution();
-    int answer = sol->firstMissingPositive(nums);
-    printf("%d\n", answer);
-
-    return 0;
-}
