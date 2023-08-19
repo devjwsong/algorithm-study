@@ -19,26 +19,27 @@ public:
         int m = word1.size(), n = word2.size();
         vector<vector<int>> dp (m+1, vector<int> (n+1, 0));
         
-        for (int i=0; i<=m; ++i) {
-            dp[i][0] = i;
-        }
-        for (int j=0; j<=n; ++j) {
+        for (int j=1; j<=n; ++j) {
             dp[0][j] = j;
         }
-        
+
+        for (int i=1; i<=m; ++i) {
+            dp[i][0] = i;
+        }
+
         for (int i=1; i<=m; ++i) {
             for (int j=1; j<=n; ++j) {
                 if (word1[i-1] == word2[j-1]) {
                     dp[i][j] = dp[i-1][j-1];
                 } else {
-                    int ins = 1 + dp[i][j-1];
-                    int del = 1 + dp[i-1][j];
-                    int rep = 1 + dp[i-1][j-1];
-                    dp[i][j] = min(rep, min(ins, del));
+                    int insert = dp[i][j-1] + 1;
+                    int remove = dp[i-1][j] + 1;
+                    int replace = dp[i-1][j-1] + 1;
+                    dp[i][j] = min(min(insert, remove), replace);
                 }
             }
         }
-        
+
         return dp[m][n];
     }
 };
@@ -58,46 +59,27 @@ class Solution2 {
 public:
     int minDistance(string word1, string word2) {
         int m = word1.size(), n = word2.size();
-        vector<int> cur (n+1, 0);
-        vector<int> prev (n+1, 0);
-        
-        for (int j=0; j<=n; ++j) {
+        vector<int> cur (n+1, 0), prev (n+1, 0);
+
+        for (int j=1; j<=n; ++j) {
             prev[j] = j;
         }
-        
+
         for (int i=1; i<=m; ++i) {
             cur[0] = i;
             for (int j=1; j<=n; ++j) {
                 if (word1[i-1] == word2[j-1]) {
                     cur[j] = prev[j-1];
                 } else {
-                    int ins = 1 + cur[j-1];
-                    int del = 1 + prev[j];
-                    int rep = 1 + prev[j-1];
-                    cur[j] = min(rep, min(ins, del));
+                    int insert = cur[j-1] + 1;
+                    int remove = prev[j] + 1;
+                    int replace = prev[j-1] + 1;
+                    cur[j] = min(min(insert, remove), replace);
                 }
             }
             prev = cur;
         }
-        
+
         return prev[n];
     }
 };
-
-
-int main() {
-
-    string word1, word2;
-    getline(cin, word1);
-    getline(cin, word2);
-
-    Solution1* sol1 = new Solution1();
-    int answer = sol1->minDistance(word1, word2);
-    cout<<answer<<"\n";
-
-    Solution2* sol2 = new Solution2();
-    answer = sol2->minDistance(word1, word2);
-    cout<<answer<<"\n";
-
-    return 0;
-}
