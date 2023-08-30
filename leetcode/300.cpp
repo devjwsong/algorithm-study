@@ -4,7 +4,12 @@
 using namespace std;
 
 
-// O(n^2) solution.
+/*
+Dynamic Programming.
+dp[i]: The length of the longest increasing subsequence within [0, i].
+Time: O(n^2).
+Space: O(n).
+*/
 class Solution1 {
 public:
     int lengthOfLIS(vector<int>& nums) {
@@ -31,9 +36,17 @@ public:
 
 
 /*
-O(nlogn) solution.
-The idea is containing as small value as possible.
-Since mem array is sorted, we can use binary search to find the rightful index for new value.
+Dynamic Programming with a trick!
+Keep in mind the array mem does NOT contain the longest subsequence itself.
+It just keeps the length.
+If we find a value which is not larger than the maximum in mem,
+we find the possible index which is the lower bound for equal or larger values to replace it.
+Now, the length is kepts but mem has another possible fresh start for increasing subsequence.
+If there are other values which can break the current maximum, the current maximum will be replace eventually,
+and the length would be updated.
+If not, even if mem does not have correct subsquence, the length memorizes the answer.
+Time: O(nlogn).
+Space: O(n).
 */
 class Solution2 {
 public:
@@ -49,31 +62,6 @@ public:
                 mem[idx] = nums[i];
             }
         }
-
         return mem.size();
     }
 };
-
-
-int main() {
-
-    int n;
-    scanf("%d", &n);
-
-    vector<int> nums;
-    for (int i=0; i<n; ++i) {
-        int val;
-        scanf(" %d", &val);
-        nums.push_back(val);
-    }
-
-    Solution1* sol1= new Solution1();
-    int answer = sol1->lengthOfLIS(nums);
-    printf("%d\n", answer);
-
-    Solution2* sol2= new Solution2();
-    answer = sol2->lengthOfLIS(nums);
-    printf("%d\n", answer);
-
-    return 0;
-}
